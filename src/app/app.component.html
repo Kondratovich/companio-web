@@ -1,5 +1,5 @@
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Компания</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/">Компания</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
         data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
         aria-label="Переключение навигации">
@@ -24,14 +24,14 @@
 
 <div class="container-fluid">
     <div class="row">
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse min-vh-100">
             <div class="position-sticky pt-3">
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <h3 class="text-muted mt-4 mb-1">
                     <span>Проектные задачи</span>
-                </h6>
+                </h3>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="/projects">
+                        <a routerLink="/projects" routerLinkActive="text-dark" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-window-stack" viewBox="0 0 16 16">
                                 <path
@@ -43,7 +43,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/employees">
+                        <a routerLink="/employees" routerLinkActive="text-dark" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-heart" viewBox="0 0 16 16">
                                 <path
@@ -53,7 +53,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/customers">
+                        <a routerLink="/customers" routerLinkActive="text-dark" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-coin" viewBox="0 0 16 16">
                                 <path
@@ -66,7 +66,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="/tasks">
+                        <a routerLinkActive="text-dark" routerLink="/tasks" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-check-all" viewBox="0 0 16 16">
                                 <path
@@ -77,12 +77,12 @@
                     </li>
                 </ul>
 
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <h3 class="text-muted mt-4 mb-1">
                     <span>Команды</span>
-                </h6>
+                </h3>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="/teams">
+                        <a routerLink="/teams" routerLinkActive="text-dark" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-people-fill" viewBox="0 0 16 16">
                                 <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
@@ -94,7 +94,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/tasks/create">
+                        <a routerLink="/tasks/create" routerLinkActive="text-dark" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-tools" viewBox="0 0 16 16">
                                 <path
@@ -104,7 +104,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/teams/create">
+                        <a routerLink="/teams/create" routerLinkActive="text-dark" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-building" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
@@ -116,7 +116,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/statistics">
+                        <a routerLink="/statistics" routerLinkActive="text-dark" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-activity" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"

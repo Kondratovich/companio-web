@@ -1,139 +1,50 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Управление проектами</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Поделиться</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Экспорт</button>
-        </div>
-        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            Эта неделя
-        </button>
-    </div>
+<div class="mt-3">
+    <button mat-raised-button routerLink="/projects/create" color="primary" class="mt-3" style="float: right;">Добавить проект</button>
+    <mat-form-field class="">
+        <mat-label>Поиск</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="...">
+    </mat-form-field>
 </div>
 
-<div class="container my-2">
-    <a href="@{/manager/projects/showAddForm}" class="btn btn-success btn-sm mb-3"> Добавить
-        проект </a>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
 
-    <table class="table table-striped table-responsive-md table-hover">
-        <thead>
-            <tr>
-                <th>
-                    <a
-                        href="@{'/manager/projects/page/' + ${currentPage} + '?sortField=name&sortDir=' + ${reverseSortDir}}">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Название</th>
+            <td mat-cell *matCellDef="let project"><a routerLink="/projects/{{project.id}}" class="text-decoration-none">{{ project.name }}</a></td>
+        </ng-container>
 
-                        <!-- <svg th:if="${sortField.equals('name')}" xmlns="http://www.w3.org/2000/svg" width="16"
-                            height="16" fill="currentColor" class="bi bi-arrow" viewBox="0 0 16 16">
-                            <path th:if="${reverseSortDir.equals('desc')}" fill-rule="evenodd"
-                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
-                            <path th:if="${reverseSortDir.equals('asc')}" fill-rule="evenodd"
-                                d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
-                        </svg> -->
-                        Название проекта</a>
-                </th>
-                <th>
-                    <a
-                        href="@{'/manager/projects/page/' + ${currentPage} + '?sortField=customer.email&sortDir=' + ${reverseSortDir}}">
-                        <!-- <svg th:if="${sortField.equals('customer.email')}" xmlns="http://www.w3.org/2000/svg" width="16"
-                            height="16" fill="currentColor" class="bi bi-arrow" viewBox="0 0 16 16">
-                            <path th:if="${reverseSortDir.equals('desc')}" fill-rule="evenodd"
-                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
-                            <path th:if="${reverseSortDir.equals('asc')}" fill-rule="evenodd"
-                                d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
-                        </svg> -->
-                        Почта заказчика</a>
-                </th>
-                <th>
-                    <a
-                        href="@{'/manager/projects/page/' + ${currentPage} + '?sortField=description&sortDir=' + ${reverseSortDir}}">
-                        <!-- <svg th:if="${sortField.equals('description')}" xmlns="http://www.w3.org/2000/svg" width="16"
-                            height="16" fill="currentColor" class="bi bi-arrow" viewBox="0 0 16 16">
-                            <path th:if="${reverseSortDir.equals('desc')}" fill-rule="evenodd"
-                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
-                            <path th:if="${reverseSortDir.equals('asc')}" fill-rule="evenodd"
-                                d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
-                        </svg> -->
-                        Описание</a>
-                </th>
-                <th>
-                    <a
-                        href="@{'/manager/projects/page/' + ${currentPage} + '?sortField=price&sortDir=' + ${reverseSortDir}}">
-                        <!-- <svg th:if="${sortField.equals('price')}" xmlns="http://www.w3.org/2000/svg" width="16"
-                            height="16" fill="currentColor" class="bi bi-arrow" viewBox="0 0 16 16">
-                            <path th:if="${reverseSortDir.equals('desc')}" fill-rule="evenodd"
-                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
-                            <path th:if="${reverseSortDir.equals('asc')}" fill-rule="evenodd"
-                                d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
-                        </svg> -->
-                        Стоимость</a>
-                </th>
-                <th>
-                    <a
-                        href="@{'/manager/projects/page/' + ${currentPage} + '?sortField=dateAdded&sortDir=' + ${reverseSortDir}}">
-                        <!-- <svg th:if="${sortField.equals('dateAdded')}" xmlns="http://www.w3.org/2000/svg" width="16"
-                            height="16" fill="currentColor" class="bi bi-arrow" viewBox="0 0 16 16">
-                            <path th:if="${reverseSortDir.equals('desc')}" fill-rule="evenodd"
-                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
-                            <path th:if="${reverseSortDir.equals('asc')}" fill-rule="evenodd"
-                                d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
-                        </svg> -->
-                        Дата старта</a>
-                </th>
-                <th>
-                    <a
-                        href="@{'/manager/projects/page/' + ${currentPage} + '?sortField=deadline&sortDir=' + ${reverseSortDir}}">
-                        <!-- <svg th:if="${sortField.equals('deadline')}" xmlns="http://www.w3.org/2000/svg" width="16"
-                            height="16" fill="currentColor" class="bi bi-arrow" viewBox="0 0 16 16">
-                            <path th:if="${reverseSortDir.equals('desc')}" fill-rule="evenodd"
-                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
-                            <path th:if="${reverseSortDir.equals('asc')}" fill-rule="evenodd"
-                                d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
-                        </svg> -->
-                        Дедлайн</a>
-                </th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let project of projects">
-                <td>{{project.name}}</td>
-                <td>project.customerEmail</td>
-                <td>{{project.description}}</td>
-                <td>{{project.price}}</td>
-                <td>{{project.dateAdded | date:"dd.MM.yyyy"}}</td>
-                <td>{{project.deadline | date:"dd.MM.yyyy"}}</td>
-                <td><a href="@{/manager/projects/showUpdateForm/{id}(id=${project.id})}"
-                        class="btn btn-primary">Изменить</a>
-                    <a href="@{/manager/projects/delete/{id}(id=${project.id})}" class="btn btn-danger">Удалить</a>
-                </td>
-            </tr>
-        </tbody>
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Описание</th>
+            <td mat-cell *matCellDef="let project">{{ project.description }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateAdded">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Дата старта</th>
+            <td mat-cell *matCellDef="let project">{{ project.dateAdded | date }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="deadline">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Дедалайн</th>
+            <td mat-cell *matCellDef="let project">{{ project.deadline | date }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Бюджет</th>
+            <td mat-cell *matCellDef="let project">{{ project.price  | currency}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let project" style="text-align: right;">
+                <button mat-button routerLink="/projects/{{project.id}}"><mat-icon>edit</mat-icon></button>
+                <button mat-button (click)="openDialog()"><mat-icon>delete</mat-icon></button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <span>
-        Всего: {{projects.length}}
-    </span>
-    <!-- <div th:if="${totalPages > 1}" class="mt-3">
-        <ul class="pagination">
-            <li class="page-item" th:if="${currentPage != 1}">
-                <a href="@{'/manager/projects/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
-                    class="page-link">Предыдущая</a>
-            </li>
-            <li th:unless="${currentPage != 1}" class="page-item disabled"><a class="page-link" href="#">Предыдущая</a>
-            </li>
-            <li class="page-item" th:each="i: ${#numbers.sequence(1, totalPages)}">
-                <a th:if="${currentPage != i}" class="page-link"
-                    href="@{'/manager/projects/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
-                <a class="page-link link-dark" th:unless="${currentPage != i}" href="#">[[${i}]]</a>
-            </li>
-            <li class="page-item" th:if="${currentPage < totalPages}">
-                <a href="@{'/manager/projects/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
-                    class="page-link">Следующая</a>
-            </li>
-            <li th:unless="${currentPage < totalPages}" class="page-item disabled">
-                <a class="page-link" href="#">Следующая</a>
-            </li>
-        </ul>
-    </div> -->
 
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
 </div>
