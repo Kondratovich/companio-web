@@ -1,0 +1,28 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Проектные задачи</h1>
+</div>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Название задачи</th>
+            <th>Описание</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        <div th:each="project : ${listProjects}">
+            <tr class="table-active">
+                <td th:text="${project.name}" colspan="4"></td>
+            </tr>
+            <tr th:each="task, state : ${project.tasks}">
+                <td th:text="${state.index+1}"></td>
+                <td th:text="${task.name}"></td>
+                <td th:text="${task.description}"></td>
+                <td th:text="${task.status}"></td>
+            </tr>
+        </div>
+
+    </tbody>
+</table>
