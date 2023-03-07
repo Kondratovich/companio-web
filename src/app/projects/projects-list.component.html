@@ -38,7 +38,7 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let project" style="text-align: right;">
                 <button mat-button routerLink="/projects/{{project.id}}"><mat-icon>edit</mat-icon></button>
-                <button mat-button (click)="openDialog()"><mat-icon>delete</mat-icon></button>
+                <button mat-button (click)="openDialog(project.id)"><mat-icon>delete</mat-icon></button>
             </td>
         </ng-container>
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Project } from './project.model';
 import { environment } from '../../enviroments/enviroment';
 
@@ -14,11 +14,40 @@ export class ProjectService {
     constructor(private http: HttpClient) { }
 
     getProjects(): Observable<Project[]> {
-        return this.http.get<Project[]>(`${this.apiUrl}/projects`, { headers: this.headers });
+        return this.http.get<Project[]>(`${this.apiUrl}/projects`, { headers: this.headers }).pipe(
+            map(res => res),
+            catchError(this.handleError)
+        );
     }
 
-    getProject(id: number): Observable<Project> {
+    getProject(id: string): Observable<Project> {
         const url = `${this.apiUrl}/projects/${id}`;
-        return this.http.get<Project>(url);
+        return this.http.get<Project>(url).pipe(
+            map(res => res),
+            catchError(this.handleError)
+        );;
+    }
+
+    deleteProject(id: string): Observable<Project> {
+        const url = `${this.apiUrl}/projects/${id}`;
+        return this.http.delete<Project>(url).pipe(
+            map(res => res),
+            catchError(this.handleError)
+        );;
+    }
+
+    private handleError(error: HttpErrorResponse) {
+        let errorMessage;
+        if (error.error instanceof ErrorEvent) {
+            // client-side error
+            errorMessage = error.error.message;
+        } else {
+            // server-side error
+            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+        }
+
+        console.error(errorMessage);
+        const errorObject = { name: 'HttpError', message: errorMessage };
+        return throwError(() => errorObject);
     }
 }

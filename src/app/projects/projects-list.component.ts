@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from './project.service';
+import { ConfirmDialogService } from './../shared/components/confirm-dialog/confirm-dialog.service';
+import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
 import { Project } from './project.model';
 import { ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-projects-list',
@@ -18,21 +19,12 @@ export class ProjectsListComponent implements OnInit {
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-    constructor(private projectService: ProjectService, private dialog: MatDialog) { }
+    constructor(private projectService: ProjectService, private dialogService: ConfirmDialogService, private errorDialogService: ErrorDialogService) { }
 
     ngOnInit(): void {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.getProjects();
-    }
-
-    getProjects(): void {
-        this.projectService.getProjects()
-            .subscribe(projects => this.dataSource.data = projects);
-    }
-
-    openDialog() {
-        this.dialog.open(DialogElementsExampleDialog);
     }
 
     applyFilter(event: Event) {
@@ -43,10 +35,41 @@ export class ProjectsListComponent implements OnInit {
             this.dataSource.paginator.firstPage();
         }
     }
-}
 
-@Component({
-    selector: 'dialog-elements-example-dialog',
-    template: `<h1>Are you?</h1>`
-  })
-  export class DialogElementsExampleDialog {}
+    openDialog(projectId: string) {
+        const options = {
+            title: 'Удалить проект',
+            message: 'Вы уверены?',
+            cancelText: 'Нет',
+            confirmText: 'Да'
+        };
+
+        this.dialogService.open(options);
+
+        this.dialogService.confirmed().subscribe(confirmed => {
+            if (confirmed) {
+                this.deleteProject(projectId);
+            }
+        });
+    }
+
+    getProjects(): void {
+        this.projectService.getProjects()
+            .subscribe(projects => this.dataSource.data = projects);
+    }
+
+    deleteProject(projectId: string) {
+        debugger;
+        this.projectService.deleteProject(projectId)
+            .subscribe({
+            next: () => {
+              console.log('Project deleted successfully');
+              this.dataSource.data = this.dataSource.data.filter(project => project.id !== projectId);
+              debugger;
+            },
+            error: (error) => {
+                this.errorDialogService.openDialog(error.message);
+            }
+          });
+    }
+}
