@@ -1,48 +1,48 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { Project } from './project.model';
+import { Customer } from './customer.model';
 import { environment } from '../../enviroments/enviroment';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ProjectService {
+export class CustomerService {
     private apiUrl = environment.apiUrl;
     private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     constructor(private http: HttpClient) { }
 
-    getProjects(): Observable<Project[]> {
-        return this.http.get<Project[]>(`${this.apiUrl}/projects`, { headers: this.headers }).pipe(
+    getCustomers(): Observable<Customer[]> {
+        return this.http.get<Customer[]>(`${this.apiUrl}/customers`, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );
     }
 
-    getProject(id: string): Observable<Project> {
-        return this.http.get<Project>(`${this.apiUrl}/projects/${id}`, { headers: this.headers }).pipe(
+    getCustomer(id: string): Observable<Customer> {
+        return this.http.get<Customer>(`${this.apiUrl}/customers/${id}`, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );;
     }
 
-    createProject(project: Project): Observable<Project> {
-        return this.http.post<Project>(`${this.apiUrl}/projects`, project, { headers: this.headers }).pipe(
+    createCustomer(customer: Customer): Observable<Customer> {
+        return this.http.post<Customer>(`${this.apiUrl}/customers`, customer, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );
     }
 
-    updateProject(project: Project): Observable<Project> {
-        return this.http.put<Project>(`${this.apiUrl}/projects/${project.id}`, project, { headers: this.headers }).pipe(
+    updateCustomer(customer: Customer): Observable<Customer> {
+        return this.http.put<Customer>(`${this.apiUrl}/customers/${customer.id}`, customer, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );
     }
 
-    deleteProject(id: string): Observable<Project> {
-        return this.http.delete<Project>(`${this.apiUrl}/projects/${id}`, { headers: this.headers }).pipe(
+    deleteCustomer(id: string): Observable<Customer> {
+        return this.http.delete<Customer>(`${this.apiUrl}/customers/${id}`, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );;

@@ -1,48 +1,48 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { Project } from './project.model';
+import { Employee } from './employee.model';
 import { environment } from '../../enviroments/enviroment';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ProjectService {
+export class EmployeeService {
     private apiUrl = environment.apiUrl;
     private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     constructor(private http: HttpClient) { }
 
-    getProjects(): Observable<Project[]> {
-        return this.http.get<Project[]>(`${this.apiUrl}/projects`, { headers: this.headers }).pipe(
+    getEmployees(): Observable<Employee[]> {
+        return this.http.get<Employee[]>(`${this.apiUrl}/users`, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );
     }
 
-    getProject(id: string): Observable<Project> {
-        return this.http.get<Project>(`${this.apiUrl}/projects/${id}`, { headers: this.headers }).pipe(
+    getEmployee(id: string): Observable<Employee> {
+        return this.http.get<Employee>(`${this.apiUrl}/users/${id}`, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );;
     }
 
-    createProject(project: Project): Observable<Project> {
-        return this.http.post<Project>(`${this.apiUrl}/projects`, project, { headers: this.headers }).pipe(
+    createEmployee(employee: Employee): Observable<Employee> {
+        return this.http.post<Employee>(`${this.apiUrl}/users`, employee, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );
     }
 
-    updateProject(project: Project): Observable<Project> {
-        return this.http.put<Project>(`${this.apiUrl}/projects/${project.id}`, project, { headers: this.headers }).pipe(
+    updateEmployee(employee: Employee): Observable<Employee> {
+        return this.http.put<Employee>(`${this.apiUrl}/users/${employee.id}`, employee, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );
     }
 
-    deleteProject(id: string): Observable<Project> {
-        return this.http.delete<Project>(`${this.apiUrl}/projects/${id}`, { headers: this.headers }).pipe(
+    deleteEmployee(id: string): Observable<Employee> {
+        return this.http.delete<Employee>(`${this.apiUrl}/users/${id}`, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );;

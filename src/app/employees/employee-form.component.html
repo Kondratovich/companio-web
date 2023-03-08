@@ -1,0 +1,30 @@
+<form [formGroup]="myForm" novalidate (ngSubmit)="submit()" class="mat-elevation-z8 mt-4 p-4 w-50"
+    style="margin: auto;">
+
+    <h1 *ngIf="employee == null" class="text-center">Добавить сотрудника</h1>
+    <h1 *ngIf="employee != null" class="text-center">Редактировать сотрудника</h1>
+
+    <mat-form-field class="w-50">
+        <mat-label>Имя</mat-label>
+        <input matInput formControlName="firstNameControl" [value]="myForm.get('firstNameControl')?.value">
+    </mat-form-field>
+
+    <mat-form-field class="w-50">
+        <mat-label>Фамилия</mat-label>
+        <input matInput formControlName="lastNameControl" [value]="myForm.get('lastNameControl')?.value">
+    </mat-form-field>
+
+    <mat-form-field class="d-block">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="emailControl" placeholder="email@example.com">
+        <mat-error *ngIf="myForm.controls['emailControl'].hasError('email') && !myForm.controls['emailControl'].hasError('required')">
+            Пожалуйста, введите корректный адрес
+        </mat-error>
+        <mat-error *ngIf="myForm.controls['emailControl'].hasError('required')">
+            Email <strong>обязателен</strong>
+        </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="d-block w-100 mt-3" [disabled]="myForm.status !== 'VALID'">Сохранить</button>
+
+</form>
