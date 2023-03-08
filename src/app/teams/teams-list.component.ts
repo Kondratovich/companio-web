@@ -1,26 +1,26 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Task, TaskStatus } from './task.model';
+import { Team } from './team.model';
 import { ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { TaskService } from './task.service';
+import { TeamService } from './team.service';
 import { ConfirmDialogService } from './../shared/components/confirm-dialog/confirm-dialog.service';
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
 
 @Component({
-    selector: 'app-tasks-list',
-    templateUrl: './tasks-list.component.html'
+    selector: 'app-teams-list',
+    templateUrl: './teams-list.component.html'
 })
-export class TasksListComponent implements OnInit, AfterViewInit {
-    readonly displayedColumns: string[] = ['name', 'description', 'status', 'actions'];
-    readonly dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>();
+export class TeamsListComponent implements OnInit, AfterViewInit {
+    readonly displayedColumns: string[] = ['name', 'description', 'actions'];
+    readonly dataSource: MatTableDataSource<Team> = new MatTableDataSource<Team>();
 
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     constructor(
-        private taskService: TaskService,
+        private teamService: TeamService,
         private dialogService: ConfirmDialogService,
         private errorDialogService: ErrorDialogService
     ) { }
@@ -28,7 +28,7 @@ export class TasksListComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        this.getTasks();
+        this.getTeams();
     }
 
     ngAfterViewInit() {
@@ -44,7 +44,7 @@ export class TasksListComponent implements OnInit, AfterViewInit {
         }
     }
 
-    openDialog(taskId: string) {
+    openDialog(teamId: string) {
         const options = {
             title: 'Удалить заказчика',
             message: 'Вы уверены?',
@@ -56,28 +56,24 @@ export class TasksListComponent implements OnInit, AfterViewInit {
 
         this.dialogService.confirmed().subscribe(confirmed => {
             if (confirmed) {
-                this.deleteTask(taskId);
+                this.deleteTeam(teamId);
             }
         });
     }
 
-    getTasks(): void {
-        this.taskService.getTasks()
+    getTeams(): void {
+        this.teamService.getTeams()
             .subscribe({
-                next: tasks => this.dataSource.data = tasks,
+                next: teams => this.dataSource.data = teams,
                 error: error => this.errorDialogService.openDialog(error.message)
             });
     }
 
-    deleteTask(taskId: string) {
-        this.taskService.deleteTask(taskId)
+    deleteTeam(teamId: string) {
+        this.teamService.deleteTeam(teamId)
             .subscribe({
-                next: () => this.dataSource.data = this.dataSource.data.filter(task => task.id !== taskId),
+                next: () => this.dataSource.data = this.dataSource.data.filter(team => team.id !== teamId),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
-    }
-
-    getTaskStatusName(status: number): string {
-        return TaskStatus[status];
     }
 }

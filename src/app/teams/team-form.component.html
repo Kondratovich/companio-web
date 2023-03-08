@@ -1,0 +1,19 @@
+<form [formGroup]="myForm" novalidate (ngSubmit)="submit()" class="mat-elevation-z8 mt-4 p-4 w-50"
+    style="margin: auto;">
+
+    <h1 *ngIf="team == null" class="text-center">Добавить команду</h1>
+    <h1 *ngIf="team != null" class="text-center">Редактировать команду</h1>
+
+    <mat-form-field class="w-50">
+        <mat-label>Название</mat-label>
+        <input matInput formControlName="nameControl" [value]="myForm.get('nameControl')?.value">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="d-block">
+        <mat-label>Описание</mat-label>
+        <textarea matInput formControlName="descriptionControl"></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="d-block w-100 mt-3" [disabled]="myForm.status !== 'VALID'">Сохранить</button>
+
+</form>

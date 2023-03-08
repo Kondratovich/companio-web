@@ -27,6 +27,10 @@ import { EmployeesListComponent } from './employees/employees-list.component';
 import { EmployeeFormComponent } from './employees/employee-form.component';
 import { CustomersListComponent } from './customers/customers-list.component';
 import { CustomerFormComponent } from './customers/customer-form.component';
+import { TeamsListComponent } from './teams/teams-list.component';
+import { TeamFormComponent } from './teams/team-form.component';
+import { TasksListComponent } from './tasks/tasks-list.component';
+import { TaskFormComponent } from './tasks/task-form.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +41,10 @@ import { CustomerFormComponent } from './customers/customer-form.component';
         EmployeeFormComponent,
         CustomersListComponent,
         CustomerFormComponent,
+        TeamsListComponent,
+        TeamFormComponent,
+        TasksListComponent,
+        TaskFormComponent,
         ConfirmDialogComponent,
         ErrorDialogComponent,
         NotFoundComponent
