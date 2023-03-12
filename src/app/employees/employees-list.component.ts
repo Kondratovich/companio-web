@@ -7,31 +7,35 @@ import { MatSort } from '@angular/material/sort';
 import { EmployeeService } from './employee.service';
 import { ConfirmDialogService } from '../shared/components/confirm-dialog/confirm-dialog.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
+import { TeamService } from '../teams/team.service';
+import { Team } from '../teams/team.model';
 
 @Component({
     selector: 'app-employees-list',
     templateUrl: './employees-list.component.html'
 })
 export class EmployeesListComponent implements OnInit, AfterViewInit {
-    readonly displayedColumns: string[] = ['email', 'firstName', 'lastName', 'role', 'actions'];
+    readonly displayedColumns: string[] = ['email', 'firstName', 'lastName', 'role', 'team', 'actions'];
     readonly dataSource: MatTableDataSource<Employee> = new MatTableDataSource<Employee>();
+    teams!: Team[];
 
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     constructor(
         private employeeService: EmployeeService,
+        private teamService: TeamService,
         private dialogService: ConfirmDialogService,
         private errorDialogService: ErrorDialogService
     ) { }
 
     ngOnInit(): void {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        this.getTeams();
         this.getEmployees();
     }
 
     ngAfterViewInit() {
+        this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
     }
 
@@ -69,6 +73,14 @@ export class EmployeesListComponent implements OnInit, AfterViewInit {
             });
     }
 
+    getTeams(): void {
+        this.teamService.getTeams()
+            .subscribe({
+                next: teams => this.teams = teams,
+                error: error => this.errorDialogService.openDialog(error.message)
+            });
+    }
+
     deleteEmployee(employeeId: string) {
         this.employeeService.deleteEmployee(employeeId)
             .subscribe({
@@ -81,5 +93,9 @@ export class EmployeesListComponent implements OnInit, AfterViewInit {
 
     getRoleName(role: number): string {
         return Role[role];
+    }
+
+    getTeamName(teamId: string): string | undefined {
+        return this.teams?.find(team => team.id === teamId)?.name;
     }
 }

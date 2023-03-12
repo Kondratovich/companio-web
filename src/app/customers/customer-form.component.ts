@@ -24,8 +24,8 @@ export class CustomerFormComponent implements OnInit {
     ngOnInit(): void {
         this.myForm = this.formBuilder.group({
             emailControl: ['', [Validators.required, Validators.email]],
-            firstNameControl: '',
-            lastNameControl: '',
+            firstNameControl: ['', [Validators.required]],
+            lastNameControl: ['', [Validators.required]],
         });
 
         const customerId = this.route.snapshot.paramMap.get('id');

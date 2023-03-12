@@ -7,11 +7,26 @@
     <mat-form-field class="d-block">
         <mat-label>Название</mat-label>
         <input matInput formControlName="nameControl" [value]="myForm.get('nameControl')?.value">
+        <mat-error *ngIf="myForm.controls['nameControl'].hasError('required')">
+            Название <strong>обязательно</strong>
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="d-block">
         <mat-label>Описание</mat-label>
         <textarea matInput formControlName="descriptionControl"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="d-block">
+        <mat-label>Проект</mat-label>
+        <mat-select formControlName="projectControl" [value]="myForm.get('projectControl')?.value">
+            <mat-option *ngFor="let project of projects" [value]="project.id">
+                {{project.name}}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="myForm.controls['projectControl'].hasError('required')">
+            Проект <strong>обязателен</strong>
+        </mat-error>
     </mat-form-field>
 
     <button mat-raised-button color="primary" class="d-block w-100 mt-3" [disabled]="myForm.status !== 'VALID'">Сохранить</button>

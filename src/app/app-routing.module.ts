@@ -11,8 +11,11 @@ import { TeamFormComponent } from './teams/team-form.component';
 import { TeamsListComponent } from './teams/teams-list.component';
 import { TaskFormComponent } from './tasks/task-form.component';
 import { TasksListComponent } from './tasks/tasks-list.component';
+import { ProjectsInfoComponent } from './projects-info/projects-info.component';
+import { TeamsInfoComponent } from './teams-info/teams-info.component';
 
 const routes: Routes = [
+  { path: 'projects-info', component: ProjectsInfoComponent },
   { path: 'projects/create', component: ProjectFormComponent },
   { path: 'projects/:id', component: ProjectFormComponent },
   { path: 'projects', component: ProjectsListComponent },
@@ -22,6 +25,7 @@ const routes: Routes = [
   { path: 'customers/create', component: CustomerFormComponent },
   { path: 'customers/:id', component: CustomerFormComponent },
   { path: 'customers', component: CustomersListComponent },
+  { path: 'teams-info', component: TeamsInfoComponent },
   { path: 'teams/create', component: TeamFormComponent },
   { path: 'teams/:id', component: TeamFormComponent },
   { path: 'teams', component: TeamsListComponent },

@@ -27,8 +27,8 @@ export class EmployeeService {
         );;
     }
 
-    createEmployee(employee: Employee): Observable<Employee> {
-        return this.http.post<Employee>(`${this.apiUrl}/users`, employee, { headers: this.headers }).pipe(
+    registerEmployee(employee: Employee): Observable<Employee> {
+        return this.http.post<Employee>(`${this.apiUrl}/register`, employee, { headers: this.headers }).pipe(
             map(res => res),
             catchError(this.handleError)
         );

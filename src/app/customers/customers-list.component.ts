@@ -26,13 +26,12 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     ) { }
 
     ngOnInit(): void {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
         this.getCustomers();
     }
 
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
     }
 
     applyFilter(event: Event) {
@@ -70,13 +69,9 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     }
 
     deleteCustomer(customerId: string) {
-        debugger;
         this.customerService.deleteCustomer(customerId)
             .subscribe({
-                next: () => {
-                    this.dataSource.data = this.dataSource.data.filter(customer => customer.id !== customerId);
-                    debugger;
-                },
+                next: () => this.dataSource.data = this.dataSource.data.filter(customer => customer.id !== customerId),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
     }

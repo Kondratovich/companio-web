@@ -31,6 +31,8 @@ import { TeamsListComponent } from './teams/teams-list.component';
 import { TeamFormComponent } from './teams/team-form.component';
 import { TasksListComponent } from './tasks/tasks-list.component';
 import { TaskFormComponent } from './tasks/task-form.component';
+import { ProjectsInfoComponent } from './projects-info/projects-info.component';
+import { TeamsInfoComponent } from './teams-info/teams-info.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +49,8 @@ import { TaskFormComponent } from './tasks/task-form.component';
         TaskFormComponent,
         ConfirmDialogComponent,
         ErrorDialogComponent,
+        ProjectsInfoComponent,
+        TeamsInfoComponent,
         NotFoundComponent
     ],
     imports: [

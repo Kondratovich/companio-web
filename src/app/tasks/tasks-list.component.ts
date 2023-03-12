@@ -7,31 +7,35 @@ import { MatSort } from '@angular/material/sort';
 import { TaskService } from './task.service';
 import { ConfirmDialogService } from './../shared/components/confirm-dialog/confirm-dialog.service';
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
+import { Project } from '../projects/project.model';
+import { ProjectService } from '../projects/project.service';
 
 @Component({
     selector: 'app-tasks-list',
     templateUrl: './tasks-list.component.html'
 })
 export class TasksListComponent implements OnInit, AfterViewInit {
-    readonly displayedColumns: string[] = ['name', 'description', 'status', 'actions'];
+    readonly displayedColumns: string[] = ['name', 'project', 'description', 'status', 'actions'];
     readonly dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>();
+    projects!: Project[];
 
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     constructor(
         private taskService: TaskService,
+        private projectService: ProjectService,
         private dialogService: ConfirmDialogService,
         private errorDialogService: ErrorDialogService
     ) { }
 
     ngOnInit(): void {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
         this.getTasks();
+        this.getProjects();
     }
 
     ngAfterViewInit() {
+        this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
     }
 
@@ -69,6 +73,14 @@ export class TasksListComponent implements OnInit, AfterViewInit {
             });
     }
 
+    getProjects(): void {
+        this.projectService.getProjects()
+            .subscribe({
+                next: projects => this.projects = projects,
+                error: error => this.errorDialogService.openDialog(error.message)
+            });
+    }
+
     deleteTask(taskId: string) {
         this.taskService.deleteTask(taskId)
             .subscribe({
@@ -79,5 +91,9 @@ export class TasksListComponent implements OnInit, AfterViewInit {
 
     getTaskStatusName(status: number): string {
         return TaskStatus[status];
+    }
+
+    getProjectName(projectId: string): string | undefined {
+        return this.projects?.find(project => project.id === projectId)?.name;
     }
 }

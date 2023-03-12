@@ -26,12 +26,11 @@ export class TeamsListComponent implements OnInit, AfterViewInit {
     ) { }
 
     ngOnInit(): void {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
         this.getTeams();
     }
 
     ngAfterViewInit() {
+        this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
     }
 

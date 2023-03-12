@@ -1,10 +1,14 @@
-<form [formGroup]="myForm" novalidate (ngSubmit)="submit()" class="mat-elevation-z8 mt-4 p-4 w-50" style="margin: auto;">
+<form [formGroup]="myForm" novalidate (ngSubmit)="submit()" class="mat-elevation-z8 mt-4 p-4 w-50"
+    style="margin: auto;">
     <h1 *ngIf="project == null" class="text-center">Добавить проект</h1>
     <h1 *ngIf="project != null" class="text-center">Редактировать проект</h1>
 
     <mat-form-field appearance="fill" class="d-block">
         <mat-label>Название</mat-label>
         <input matInput formControlName="nameControl" [value]="myForm.get('nameControl')?.value">
+        <mat-error *ngIf="myForm.controls['nameControl'].hasError('required')">
+            Название <strong>обязательно</strong>
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="d-block">
@@ -12,22 +16,28 @@
         <textarea matInput formControlName="descriptionControl"></textarea>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" [color]="colorControl.value!" class="d-block">
+    <mat-form-field appearance="fill" class="d-block">
         <mat-label>Заказчик</mat-label>
-        <mat-select [formControl]="colorControl">
-            <mat-option value="primary">Primary</mat-option>
-            <mat-option value="accent">Accent</mat-option>
-            <mat-option value="warn">Warn</mat-option>
+        <mat-select formControlName="customerControl" [value]="myForm.get('customerControl')?.value">
+            <mat-option *ngFor="let customer of customers" [value]="customer.id">
+                {{customer.firstName + ' ' + customer.lastName}}
+            </mat-option>
         </mat-select>
+        <mat-error *ngIf="myForm.controls['customerControl'].hasError('required')">
+            Заказчик <strong>обязателен</strong>
+        </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" [color]="colorControl.value!" class="d-block">
-        <mat-label>Команда разработки</mat-label>
-        <mat-select [formControl]="colorControl">
-            <mat-option value="primary">Primary</mat-option>
-            <mat-option value="accent">Accent</mat-option>
-            <mat-option value="warn">Warn</mat-option>
+    <mat-form-field appearance="fill" class="d-block">
+        <mat-label>Команда</mat-label>
+        <mat-select formControlName="teamControl" [value]="myForm.get('teamControl')?.value">
+            <mat-option *ngFor="let team of teams" [value]="team.id">
+                {{team.name}}
+            </mat-option>
         </mat-select>
+        <mat-error *ngIf="myForm.controls['teamControl'].hasError('required')">
+            Команда <strong>обязательна</strong>
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="d-block">

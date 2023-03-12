@@ -4,6 +4,8 @@ import { Employee } from './employee.model';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmployeeService } from './employee.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
+import { TeamService } from '../teams/team.service';
+import { Team } from '../teams/team.model';
 
 @Component({
     selector: 'app-employee-form',
@@ -11,13 +13,16 @@ import { ErrorDialogService } from '../shared/components/error-dialog/error-dial
 })
 export class EmployeeFormComponent implements OnInit {
     employee?: Employee;
+    teams?: Team[];
     myForm!: FormGroup;
+    public showPassword: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private formBuilder: FormBuilder,
         private employeeService: EmployeeService,
+        private teamService: TeamService,
         private errorDialogService: ErrorDialogService
     ) { }
 
@@ -26,12 +31,18 @@ export class EmployeeFormComponent implements OnInit {
             emailControl: ['', [Validators.required, Validators.email]],
             firstNameControl: '',
             lastNameControl: '',
+            teamControl: ['', [Validators.required]],
+            roleControl: ['', [Validators.required]],
+            passwordControl: ['', [Validators.required]],
         });
 
         const employeeId = this.route.snapshot.paramMap.get('id');
         if (employeeId) {
             this.getEmployee(employeeId);
+            this.myForm.controls['passwordControl'].validator = null;
         }
+
+        this.getTeams();
     }
 
     getEmployee(employeeId: string): void {
@@ -41,11 +52,21 @@ export class EmployeeFormComponent implements OnInit {
                 this.myForm.patchValue({
                     emailControl: this.employee.email,
                     firstNameControl: this.employee.firstName,
-                    lastNameControl: this.employee.lastName
+                    lastNameControl: this.employee.lastName,
+                    teamControl: this.employee.teamId,
+                    roleControl: this.employee.role
                 });
             },
             error: error => this.errorDialogService.openDialog(error.message)
         });
+    }
+
+    getTeams(): void {
+        this.teamService.getTeams()
+            .subscribe({
+                next: teams => this.teams = teams,
+                error: error => this.errorDialogService.openDialog(error.message)
+            });
     }
 
     submit(): void {
@@ -54,10 +75,13 @@ export class EmployeeFormComponent implements OnInit {
             email: this.myForm.get('emailControl')?.value,
             firstName: this.myForm.get('firstNameControl')?.value,
             lastName: this.myForm.get('lastNameControl')?.value,
+            teamId: this.myForm.get('teamControl')?.value,
+            role: this.myForm.get('roleControl')?.value,
+            password: this.myForm.get('passwordControl')?.value,
         };
 
         if (this.employee == null) {
-            this.employeeService.createEmployee(newEmployee).subscribe({
+            this.employeeService.registerEmployee(newEmployee).subscribe({
                 next: () => this.router.navigate(['/employees']),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
@@ -67,5 +91,9 @@ export class EmployeeFormComponent implements OnInit {
                 error: error => this.errorDialogService.openDialog(error.message)
             });
         }
+    }
+
+    togglePasswordVisibility(): void {
+        this.showPassword = !this.showPassword;
     }
 }

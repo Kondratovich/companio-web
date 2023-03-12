@@ -4,9 +4,12 @@
     <h1 *ngIf="team == null" class="text-center">Добавить команду</h1>
     <h1 *ngIf="team != null" class="text-center">Редактировать команду</h1>
 
-    <mat-form-field class="w-50">
+    <mat-form-field class="d-block">
         <mat-label>Название</mat-label>
         <input matInput formControlName="nameControl" [value]="myForm.get('nameControl')?.value">
+        <mat-error *ngIf="myForm.controls['nameControl'].hasError('required')">
+            Название <strong>обязательно</strong>
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="d-block">
@@ -14,6 +17,22 @@
         <textarea matInput formControlName="descriptionControl"></textarea>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" class="d-block w-100 mt-3" [disabled]="myForm.status !== 'VALID'">Сохранить</button>
+    <!-- <mat-form-field appearance="fill" class="d-block">
+        <mat-label>Проекты</mat-label>
+        <mat-select formControlName="projectsControl" multiple>
+            <mat-option *ngFor="let project of projects" [value]="project.id">{{project.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="d-block">
+        <mat-label>Члены команды</mat-label>
+        <mat-select formControlName="employeesControl" multiple>
+            <mat-option *ngFor="let employee of employees" [value]="employee.id">{{employee.firstName + ' '
+                +employee.lastName}}</mat-option>
+        </mat-select>
+    </mat-form-field> -->
+
+    <button mat-raised-button color="primary" class="d-block w-100 mt-3"
+        [disabled]="myForm.status !== 'VALID'">Сохранить</button>
 
 </form>

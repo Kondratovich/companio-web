@@ -26,102 +26,85 @@
     <div class="row">
         <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse min-vh-100">
             <div class="position-sticky pt-3">
-                <h3 class="text-muted mt-4 mb-1">
-                    <span>Проектные задачи</span>
+                <h3 class="text-muted mt-2 mb-1">
+                    <span><b>Проектный менеджмент</b></span>
                 </h3>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a routerLink="/projects" routerLinkActive="text-dark" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-window-stack" viewBox="0 0 16 16">
-                                <path
-                                    d="M4.5 6a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1ZM6 6a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z" />
-                                <path
-                                    d="M12 1a2 2 0 0 1 2 2 2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2 2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10ZM2 12V5a2 2 0 0 1 2-2h9a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1Zm1-4v5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8H3Zm12-1V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v2h12Z" />
-                            </svg>
-                            Список проектов
+                        <a routerLink="/projects-info" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">folder_open</mat-icon>
+                            Информация о проектах
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/employees" routerLinkActive="text-dark" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-heart" viewBox="0 0 16 16">
-                                <path
-                                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
-                            </svg>
-                            Сотрудники
+                        <a routerLink="/projects" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">library_books</mat-icon>
+                            Проекты
                         </a>
                     </li>
                     <li class="nav-item">
                         <a routerLink="/customers" routerLinkActive="text-dark" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-coin" viewBox="0 0 16 16">
-                                <path
-                                    d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z" />
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                <path
-                                    d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
-                            </svg>
-                            Информация о заказчиках
+                            <mat-icon style="vertical-align: bottom;">monetization_on</mat-icon>
+                            Заказчики
                         </a>
                     </li>
                     <li class="nav-item">
                         <a routerLinkActive="text-dark" routerLink="/tasks" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-check-all" viewBox="0 0 16 16">
-                                <path
-                                    d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z" />
-                            </svg>
-                            Проектные задачи
+                            <mat-icon style="vertical-align: bottom;">done_all</mat-icon>
+                            Задачи
                         </a>
                     </li>
                 </ul>
 
                 <h3 class="text-muted mt-4 mb-1">
-                    <span>Команды</span>
+                    <span><b>Управление персоналом</b></span>
                 </h3>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
+                        <a routerLink="/teams-info" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">view_list</mat-icon>
+                            Информация о командах
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a routerLink="/teams" routerLinkActive="text-dark" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-people-fill" viewBox="0 0 16 16">
-                                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                                <path fill-rule="evenodd"
-                                    d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
-                                <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
-                            </svg>
-                            Список команд
+                            <mat-icon style="vertical-align: bottom;">folder_shared</mat-icon>
+                            Команды
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/tasks/create" routerLinkActive="text-dark" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-tools" viewBox="0 0 16 16">
-                                <path
-                                    d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.356 3.356a1 1 0 0 0 1.414 0l1.586-1.586a1 1 0 0 0 0-1.414l-3.356-3.356a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0zm9.646 10.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708zM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11z" />
-                            </svg>
-                            Формирование задач
+                        <a routerLink="/employees" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">people</mat-icon>
+                            Сотрудники
+                        </a>
+                    </li>
+                </ul>
+
+                <h3 class="text-muted mt-4 mb-1">
+                    <span><b>Статистика</b></span>
+                </h3>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a routerLink="/employees-positions-chart" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">pie_chart</mat-icon>
+                            Квалификация сотрудников
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/teams/create" routerLinkActive="text-dark" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-building" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z" />
-                                <path
-                                    d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z" />
-                            </svg>
-                            Формирование команд
+                        <a routerLink="/something" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">multiline_chart</mat-icon>
+                            Что-то будет
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="/projects-prices-chart" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">insert_chart</mat-icon>
+                            Бюджеты проектов
                         </a>
                     </li>
                     <li class="nav-item">
                         <a routerLink="/statistics" routerLinkActive="text-dark" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-activity" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z" />
-                            </svg>
+                            <mat-icon style="vertical-align: bottom;">show_chart</mat-icon>
                             Статистика
                         </a>
                     </li>
