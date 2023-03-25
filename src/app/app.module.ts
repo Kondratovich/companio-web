@@ -33,6 +33,10 @@ import { TasksListComponent } from './tasks/tasks-list.component';
 import { TaskFormComponent } from './tasks/task-form.component';
 import { ProjectsInfoComponent } from './projects-info/projects-info.component';
 import { TeamsInfoComponent } from './teams-info/teams-info.component';
+import { ProjectsPricesChartComponent } from './projects-prices-chart/projects-prices-chart.component';
+import { NgxChartsModule }from '@swimlane/ngx-charts';
+import { TasksStatusesChartComponent } from './tasks-statuses-chart/tasks-statuses-chart.component';
+import { RevenueChartComponent } from './revenue-chart/revenue-chart.component';
 
 @NgModule({
     declarations: [
@@ -50,8 +54,11 @@ import { TeamsInfoComponent } from './teams-info/teams-info.component';
         ConfirmDialogComponent,
         ErrorDialogComponent,
         ProjectsInfoComponent,
+        ProjectsPricesChartComponent,
+        TasksStatusesChartComponent,
+        RevenueChartComponent,
         TeamsInfoComponent,
-        NotFoundComponent
+        NotFoundComponent,
     ],
     imports: [
         BrowserModule,
@@ -70,7 +77,8 @@ import { TeamsInfoComponent } from './teams-info/teams-info.component';
         MatDialogModule,
         MatSelectModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        NgxChartsModule
     ],
     providers: [ConfirmDialogService, ErrorDialogService],
     bootstrap: [AppComponent]

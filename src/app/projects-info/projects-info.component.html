@@ -1,4 +1,11 @@
-<div class="mat-elevation-z8 mt-3">
+<div class="mt-3">
+    <mat-form-field class="">
+        <mat-label>Поиск</mat-label>
+        <input matInput (keyup)="applyOuterFilter($event)" placeholder="...">
+    </mat-form-field>
+</div>
+
+<div class="mat-elevation-z8">
     <table mat-table #outerSort="matSort" [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"
         matSort>
 
@@ -45,7 +52,7 @@
                     <div class="inner-table mat-elevation-z8" *ngIf="expandedElement">
                         <mat-form-field class="p-2">
                             <mat-label>Проетные задачи</mat-label>
-                            <input matInput (keyup)="applyFilter($event)" placeholder="...">
+                            <input matInput (keyup)="applyInnerFilter($event)" placeholder="...">
                         </mat-form-field>
                         <table #innerTables mat-table #innerSort="matSort" [dataSource]="element.tasks" matSort>
                             <ng-container matColumnDef="name">
@@ -78,6 +85,8 @@
         </tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
     </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
 </div>
 
 <style>

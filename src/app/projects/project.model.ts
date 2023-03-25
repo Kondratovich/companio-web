@@ -7,7 +7,7 @@ export class Project {
     customerId!: string;
     name!: string;
     description!: string;
-    price?: number;
+    price!: number;
     dateAdded?: Date;
     deadline!: Date;
     tasks?: Task[] | MatTableDataSource<Task>;

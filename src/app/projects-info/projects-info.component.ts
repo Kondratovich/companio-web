@@ -11,6 +11,7 @@ import { Customer } from '../customers/customer.model';
 import { CustomerService } from '../customers/customer.service';
 import { Team } from '../teams/team.model';
 import { TeamService } from '../teams/team.service';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
     selector: 'app-projects-info',
@@ -30,6 +31,7 @@ export class ProjectsInfoComponent implements OnInit {
     customers!: Customer[];
 
     @ViewChild('outerSort', { static: true }) sort!: MatSort;
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChildren('innerSort') innerSort!: QueryList<MatSort>;
     @ViewChildren('innerTables') innerTables!: QueryList<MatTable<Task>>;
 
@@ -57,7 +59,16 @@ export class ProjectsInfoComponent implements OnInit {
         this.innerTables.forEach((table, index) => (table.dataSource as MatTableDataSource<Task>).sort = this.innerSort.toArray()[index]);
     }
 
-    applyFilter(event: Event) {
+    applyOuterFilter(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+    applyInnerFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;
         this.innerTables.forEach((table) => (table.dataSource as MatTableDataSource<Task>).filter = filterValue.trim().toLowerCase());
     }
@@ -68,6 +79,7 @@ export class ProjectsInfoComponent implements OnInit {
                 next: projects => {
                     this.dataSource = new MatTableDataSource(projects);
                     this.dataSource.sort = this.sort;
+                    this.dataSource.paginator = this.paginator;
                     this.getTasks();
                 },
                 error: error => this.errorDialogService.openDialog(error.message)

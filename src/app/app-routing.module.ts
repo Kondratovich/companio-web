@@ -13,6 +13,9 @@ import { TaskFormComponent } from './tasks/task-form.component';
 import { TasksListComponent } from './tasks/tasks-list.component';
 import { ProjectsInfoComponent } from './projects-info/projects-info.component';
 import { TeamsInfoComponent } from './teams-info/teams-info.component';
+import { ProjectsPricesChartComponent } from './projects-prices-chart/projects-prices-chart.component';
+import { TasksStatusesChartComponent } from './tasks-statuses-chart/tasks-statuses-chart.component';
+import { RevenueChartComponent } from './revenue-chart/revenue-chart.component';
 
 const routes: Routes = [
   { path: 'projects-info', component: ProjectsInfoComponent },
@@ -32,6 +35,9 @@ const routes: Routes = [
   { path: 'tasks/create', component: TaskFormComponent },
   { path: 'tasks/:id', component: TaskFormComponent },
   { path: 'tasks', component: TasksListComponent },
+  { path: 'projects-prices-chart', component: ProjectsPricesChartComponent },
+  { path: 'revenue-chart', component: RevenueChartComponent },
+  { path: 'tasks-statuses-chart', component: TasksStatusesChartComponent },
   { path: '**', component: NotFoundComponent }
 ];
 

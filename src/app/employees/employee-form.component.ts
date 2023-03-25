@@ -29,8 +29,8 @@ export class EmployeeFormComponent implements OnInit {
     ngOnInit(): void {
         this.myForm = this.formBuilder.group({
             emailControl: ['', [Validators.required, Validators.email]],
-            firstNameControl: '',
-            lastNameControl: '',
+            firstNameControl: ['', [Validators.required]],
+            lastNameControl: ['', [Validators.required]],
             teamControl: ['', [Validators.required]],
             roleControl: ['', [Validators.required]],
             passwordControl: ['', [Validators.required]],

@@ -9,6 +9,7 @@ import { TeamService } from '../teams/team.service';
 import { EmployeeService } from '../employees/employee.service';
 import { Team } from '../teams/team.model';
 import { Employee, Role } from '../employees/employee.model';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-teams-info',
@@ -26,6 +27,7 @@ export class TeamsInfoComponent implements OnInit {
   readonly innerDisplayedColumns1: string[] = ['email', 'firstName', 'lastName', 'role'];
   readonly innerDisplayedColumns2: string[] = ['name', 'dateAdded', 'deadline', 'price'];;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('outerSort', { static: true }) sort!: MatSort;
   @ViewChildren('innerSortEmpl') innerSortEmpl!: QueryList<MatSort>;
   @ViewChildren('innerSortProj') innerSortProj!: QueryList<MatSort>;
@@ -54,6 +56,15 @@ export class TeamsInfoComponent implements OnInit {
     this.innerTablesProj.forEach((table, index) => (table.dataSource as MatTableDataSource<Project>).sort = this.innerSortProj.toArray()[index]);
   }
 
+  applyOuterFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
   applyFilterForEmployees(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.innerTablesEmpl.forEach((table) => (table.dataSource as MatTableDataSource<Employee>).filter = filterValue.trim().toLowerCase());
@@ -70,6 +81,7 @@ export class TeamsInfoComponent implements OnInit {
         next: teams => {
           this.dataSource = new MatTableDataSource(teams);
           this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
           this.getEmployees();
           this.getProjects();
         },

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Task } from './task.model';
+import { Task, TaskStatus } from './task.model';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TaskService } from './task.service';
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
@@ -15,6 +15,11 @@ export class TaskFormComponent implements OnInit {
     projects?: Project[];
     task?: Task;
     myForm!: FormGroup;
+    statuses = [
+        { value: TaskStatus.NotStarted, viewValue: 'Не начата' },
+        { value: TaskStatus.InProgress, viewValue: 'В прогрессе' },
+        { value: TaskStatus.Done, viewValue: 'Выполнена' }
+    ];
 
     constructor(
         private route: ActivatedRoute,
@@ -29,8 +34,8 @@ export class TaskFormComponent implements OnInit {
         this.myForm = this.formBuilder.group({
             nameControl: ['', [Validators.required]],
             descriptionControl: '',
-            statusControl: '',
             projectControl: ['', [Validators.required]],
+            statusControl: [TaskStatus.NotStarted, [Validators.required]],
         });
 
         const taskId = this.route.snapshot.paramMap.get('id');
@@ -48,8 +53,8 @@ export class TaskFormComponent implements OnInit {
                 this.myForm.patchValue({
                     nameControl: this.task.name,
                     descriptionControl: this.task.description,
-                    statusControl: this.task.status?.toString(),
-                    projectControl: this.task.projectId
+                    projectControl: this.task.projectId,
+                    statusControl: this.task.status,
                 });
             },
             error: error => this.errorDialogService.openDialog(error.message)
@@ -69,9 +74,11 @@ export class TaskFormComponent implements OnInit {
             id: this.task?.id,
             name: this.myForm.get('nameControl')?.value,
             description: this.myForm.get('descriptionControl')?.value,
-            status: this.myForm.get('statusControl')?.value,
             projectId: this.myForm.get('projectControl')?.value,
+            status: this.myForm.get('statusControl')?.value,
         };
+
+        debugger;
 
         if (this.task == null) {
             this.taskService.createTask(newTask).subscribe({

@@ -7,11 +7,17 @@
     <mat-form-field class="w-50">
         <mat-label>Имя</mat-label>
         <input matInput formControlName="firstNameControl" [value]="myForm.get('firstNameControl')?.value">
+        <mat-error *ngIf="myForm.controls['firstNameControl'].hasError('required')">
+            Имя <strong>обязательно</strong>
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field class="w-50">
         <mat-label>Фамилия</mat-label>
         <input matInput formControlName="lastNameControl" [value]="myForm.get('lastNameControl')?.value">
+        <mat-error *ngIf="myForm.controls['lastNameControl'].hasError('required')">
+            Фамилия <strong>обязательна</strong>
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field class="d-block">

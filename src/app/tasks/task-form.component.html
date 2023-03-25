@@ -29,6 +29,18 @@
         </mat-error>
     </mat-form-field>
 
+    <mat-form-field *ngIf="task != null" appearance="fill" class="d-block">
+        <mat-label>Статус</mat-label>
+        <mat-select formControlName="statusControl" [value]="myForm.get('statusControl')?.value">
+            <mat-option *ngFor="let status of statuses" [value]="status.value">
+                {{status.viewValue}}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="myForm.controls['statusControl'].hasError('required')">
+            Статус <strong>обязателен</strong>
+        </mat-error>
+    </mat-form-field>
+
     <button mat-raised-button color="primary" class="d-block w-100 mt-3" [disabled]="myForm.status !== 'VALID'">Сохранить</button>
 
 </form>
