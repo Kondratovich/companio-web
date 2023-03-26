@@ -1,0 +1,91 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse min-vh-100">
+            <div class="position-sticky pt-3">
+                <h3 class="text-muted mt-2 mb-1">
+                    <span><b>Проектный менеджмент</b></span>
+                </h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a routerLink="projects-info" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">folder_open</mat-icon>
+                            Информация о проектах
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="projects" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">library_books</mat-icon>
+                            Проекты
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="customers" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">monetization_on</mat-icon>
+                            Заказчики
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="tasks" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">done_all</mat-icon>
+                            Задачи
+                        </a>
+                    </li>
+                </ul>
+
+                <h3 class="text-muted mt-4 mb-1">
+                    <span><b>Управление персоналом</b></span>
+                </h3>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a routerLink="teams-info" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">view_list</mat-icon>
+                            Информация о командах
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="teams" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">folder_shared</mat-icon>
+                            Команды
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="employees" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">people</mat-icon>
+                            Сотрудники
+                        </a>
+                    </li>
+                </ul>
+
+                <h3 class="text-muted mt-4 mb-1">
+                    <span><b>Статистика</b></span>
+                </h3>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a routerLink="tasks-statuses-chart" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">pie_chart</mat-icon>
+                            Статусы задач
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="revenue-chart" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">multiline_chart</mat-icon>
+                            Доход
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a routerLink="projects-prices-chart" routerLinkActive="text-dark" class="nav-link">
+                            <mat-icon style="vertical-align: bottom;">insert_chart</mat-icon>
+                            Бюджеты проектов
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

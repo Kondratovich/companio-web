@@ -9,7 +9,7 @@ export class Employee {
 }
 
 export enum Role {
-    Admin,
+    Administrator,
     Manager,
     Employee
 }

@@ -15,7 +15,6 @@ import { EmployeeService } from '../employees/employee.service';
 })
 export class TeamFormComponent implements OnInit {
     team?: Team;
-    //projectsIdsBefore: string[] = [];
     projects?: Project[];
     employees?: Employee[];
     myForm!: FormGroup;
@@ -38,9 +37,6 @@ export class TeamFormComponent implements OnInit {
             employeesControl: '',
         });
 
-        //this.getEmployees();
-        //this.getProjects();
-
         const teamId = this.route.snapshot.paramMap.get('id');
         if (teamId) {
             this.getTeam(teamId);
@@ -51,12 +47,9 @@ export class TeamFormComponent implements OnInit {
         this.teamService.getTeam(teamId).subscribe({
             next: team => {
                 this.team = team;
-                //this.projectsIdsBefore = this.projects?.filter(p => p.teamId === team.id).map(p => p.id).filter(id => id !== undefined) as string[];
                 this.myForm.patchValue({
                     nameControl: this.team.name,
                     descriptionControl: this.team.description,
-                    //projectsControl: this.projectsIdsBefore,
-                    //employeesControl: this.employees?.filter(e => e.teamId === team.id).map(e => e.id),
                 });
             },
             error: error => this.errorDialogService.openDialog(error.message)
@@ -80,11 +73,6 @@ export class TeamFormComponent implements OnInit {
     }
 
     submit(): void {
-        // let projectsIdsAfter = this.myForm.get('projectsControl')?.value;
-        // let difference = projectsIdsAfter
-        //          .filter((x: string) => !this.projectsIdsBefore.includes(x))
-        //          .concat(this.projectsIdsBefore.filter(x => !projectsIdsAfter.includes(x)));
-
         const newTeam: Team = {
             id: this.team?.id,
             name: this.myForm.get('nameControl')?.value,
@@ -93,13 +81,13 @@ export class TeamFormComponent implements OnInit {
 
         if (this.team == null) {
             this.teamService.createTeam(newTeam).subscribe({
-                next: () => this.router.navigate(['/teams']),
+                next: () => this.router.navigate(['../'], { relativeTo: this.route }),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
 
         } else {
             this.teamService.updateTeam(newTeam).subscribe({
-                next: () => this.router.navigate(['/teams']),
+                next: () => this.router.navigate(['../'], { relativeTo: this.route }),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
         }

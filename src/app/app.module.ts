@@ -1,21 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from "@angular/material/dialog";
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 import { ConfirmDialogService } from './shared/components/confirm-dialog/confirm-dialog.service';
 import { ErrorDialogComponent } from './shared/components/error-dialog/error-dialog.component';
@@ -34,13 +21,25 @@ import { TaskFormComponent } from './tasks/task-form.component';
 import { ProjectsInfoComponent } from './projects-info/projects-info.component';
 import { TeamsInfoComponent } from './teams-info/teams-info.component';
 import { ProjectsPricesChartComponent } from './projects-prices-chart/projects-prices-chart.component';
-import { NgxChartsModule }from '@swimlane/ngx-charts';
 import { TasksStatusesChartComponent } from './tasks-statuses-chart/tasks-statuses-chart.component';
 import { RevenueChartComponent } from './revenue-chart/revenue-chart.component';
+import { LoginComponent } from './login/login.component';
+import { JWT_OPTIONS, JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { AdminNavbarComponent } from './admin-navbar/admin-navbar.component';
+import { AppMaterialModule } from './shared/modules/app.material.module';
+import { httpInterceptorsProviders } from './shared/http-interceptors-provider';
+import { HeaderComponent } from './header/header.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ManagerNavbarComponent } from './manager-navbar/manager-navbar.component';
+import { EmployeeNavbarComponent } from './employee-navbar/employee-navbar.component';
+import { TasksManagementComponent } from './tasks-management/tasks-management.component';
 
 @NgModule({
     declarations: [
         AppComponent,
+        LoginComponent,
         ProjectsListComponent,
         ProjectFormComponent,
         EmployeesListComponent,
@@ -51,36 +50,38 @@ import { RevenueChartComponent } from './revenue-chart/revenue-chart.component';
         TeamFormComponent,
         TasksListComponent,
         TaskFormComponent,
-        ConfirmDialogComponent,
-        ErrorDialogComponent,
+        TasksManagementComponent,
         ProjectsInfoComponent,
         ProjectsPricesChartComponent,
         TasksStatusesChartComponent,
         RevenueChartComponent,
         TeamsInfoComponent,
+        AdminNavbarComponent,
+        ManagerNavbarComponent,
+        EmployeeNavbarComponent,
+        HeaderComponent,
+        ErrorDialogComponent,
+        ConfirmDialogComponent,
         NotFoundComponent,
     ],
     imports: [
-        BrowserModule,
-        AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        NgxChartsModule,
+        JwtModule,
+        AppMaterialModule,
+        BrowserModule,
         BrowserAnimationsModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        NgxChartsModule
+        AppRoutingModule
     ],
-    providers: [ConfirmDialogService, ErrorDialogService],
+    providers: [
+        ConfirmDialogService,
+        ErrorDialogService,
+        JwtHelperService,
+        { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+        httpInterceptorsProviders
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

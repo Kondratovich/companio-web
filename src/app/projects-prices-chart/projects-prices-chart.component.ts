@@ -33,10 +33,7 @@ export class ProjectsPricesChartComponent implements OnInit {
   }
 
   updateChartData(): void {
-    // reset the saleData array
     this.chartData = [];
-
-    // loop through the projects and calculate the total value of each project
     this.projects.forEach(project => {
       this.chartData.push({ name: project.name, value: project.price });
     });

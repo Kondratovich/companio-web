@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from './employee.model';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from './employee.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 import { TeamService } from '../teams/team.service';
@@ -15,7 +15,7 @@ export class EmployeeFormComponent implements OnInit {
     employee?: Employee;
     teams?: Team[];
     myForm!: FormGroup;
-    public showPassword: boolean = false;
+    showPassword: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -82,12 +82,12 @@ export class EmployeeFormComponent implements OnInit {
 
         if (this.employee == null) {
             this.employeeService.registerEmployee(newEmployee).subscribe({
-                next: () => this.router.navigate(['/employees']),
+                next: () => this.router.navigate(['../'], { relativeTo: this.route }),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
         } else {
             this.employeeService.updateEmployee(newEmployee).subscribe({
-                next: () => this.router.navigate(['/employees']),
+                next: () => this.router.navigate(['../'], { relativeTo: this.route }),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
         }

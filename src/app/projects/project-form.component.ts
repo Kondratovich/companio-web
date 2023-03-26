@@ -94,12 +94,12 @@ export class ProjectFormComponent implements OnInit {
 
         if (this.project == null) {
             this.projectService.createProject(newProject).subscribe({
-                next: () => this.router.navigate(['/projects']),
+                next: () => this.router.navigate(['../'], { relativeTo: this.route }),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
         } else {
             this.projectService.updateProject(newProject).subscribe({
-                next: () => this.router.navigate(['/projects']),
+                next: () => this.router.navigate(['../'], { relativeTo: this.route }),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
         }

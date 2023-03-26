@@ -58,12 +58,12 @@ export class CustomerFormComponent implements OnInit {
 
         if (this.customer == null) {
             this.customerService.createCustomer(newCustomer).subscribe({
-                next: () => this.router.navigate(['/customers']),
+                next: () => this.router.navigate(['../'], { relativeTo: this.route }),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
         } else {
             this.customerService.updateCustomer(newCustomer).subscribe({
-                next: () => this.router.navigate(['/customers']),
+                next: () => this.router.navigate(['../'], { relativeTo: this.route }),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
         }

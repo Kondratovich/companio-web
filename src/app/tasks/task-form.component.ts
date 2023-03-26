@@ -78,16 +78,14 @@ export class TaskFormComponent implements OnInit {
             status: this.myForm.get('statusControl')?.value,
         };
 
-        debugger;
-
         if (this.task == null) {
             this.taskService.createTask(newTask).subscribe({
-                next: () => this.router.navigate(['/tasks']),
+                next: () => this.router.navigate(['../'], { relativeTo: this.route }),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
         } else {
             this.taskService.updateTask(newTask).subscribe({
-                next: () => this.router.navigate(['/tasks']),
+                next: () => this.router.navigate(['../'], { relativeTo: this.route }),
                 error: error => this.errorDialogService.openDialog(error.message)
             });
         }

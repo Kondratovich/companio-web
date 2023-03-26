@@ -63,7 +63,7 @@
         <mat-icon style="cursor: pointer;" matSuffix (click)="togglePasswordVisibility()">
             {{showPassword?'visibility_off':'visibility'}}
         </mat-icon>
-        <mat-error *ngIf="myForm.controls['teamControl'].hasError('required')">
+        <mat-error *ngIf="myForm.controls['passwordControl'].hasError('required')">
             Пароль <strong>обязателен</strong>
         </mat-error>
     </mat-form-field>

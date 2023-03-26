@@ -9,6 +9,7 @@ import { ConfirmDialogService } from '../shared/components/confirm-dialog/confir
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 import { TeamService } from '../teams/team.service';
 import { Team } from '../teams/team.model';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
     selector: 'app-employees-list',
@@ -18,6 +19,7 @@ export class EmployeesListComponent implements OnInit, AfterViewInit {
     readonly displayedColumns: string[] = ['email', 'firstName', 'lastName', 'role', 'team', 'actions'];
     readonly dataSource: MatTableDataSource<Employee> = new MatTableDataSource<Employee>();
     teams!: Team[];
+    userRole = this.authService.getUserRole();
 
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -26,7 +28,8 @@ export class EmployeesListComponent implements OnInit, AfterViewInit {
         private employeeService: EmployeeService,
         private teamService: TeamService,
         private dialogService: ConfirmDialogService,
-        private errorDialogService: ErrorDialogService
+        private errorDialogService: ErrorDialogService,
+        private authService: AuthService,
     ) { }
 
     ngOnInit(): void {
