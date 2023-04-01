@@ -23,8 +23,19 @@ import { Role } from './employees/employee.model';
 import { ManagerNavbarComponent } from './manager-navbar/manager-navbar.component';
 import { EmployeeNavbarComponent } from './employee-navbar/employee-navbar.component';
 import { TasksManagementComponent } from './tasks-management/tasks-management.component';
+import { DemoComponent } from './absence-calendar/absence-calendar.component';
+import { StartPageComponent } from './start-page/start-page.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: StartPageComponent,
+    children: [
+      { path: '', component: WelcomeComponent },
+      { path: 'login', component: LoginComponent },
+    ]
+  },
   {
     path: 'admin',
     component: AdminNavbarComponent,
@@ -88,9 +99,9 @@ const routes: Routes = [
       { path: 'projects-info', component: ProjectsInfoComponent },
       { path: 'teams-info', component: TeamsInfoComponent },
       { path: 'tasks-management', component: TasksManagementComponent },
+      { path: 'absence-management', component: DemoComponent },
     ]
   },
-  { path: 'login', component: LoginComponent },
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] },
 ];
 

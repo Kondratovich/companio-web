@@ -12,6 +12,11 @@ export class AuthInterceptorService implements HttpInterceptor {
 
     const authToken = this.authService.getAuthToken();
 
+    if (!/^http(s)?:\/\/localhost/.test(request.url)) {
+      // If the request is not to localhost, do not add the authorization header
+      return next.handle(request);
+    }
+
     if (authToken) {
       // Clone the request and add the JWT token as an Authorization header
       const authReq = request.clone({

@@ -35,6 +35,11 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ManagerNavbarComponent } from './manager-navbar/manager-navbar.component';
 import { EmployeeNavbarComponent } from './employee-navbar/employee-navbar.component';
 import { TasksManagementComponent } from './tasks-management/tasks-management.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { DemoComponent } from './absence-calendar/absence-calendar.component';
+import { StartPageComponent } from './start-page/start-page.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 @NgModule({
     declarations: [
@@ -63,6 +68,9 @@ import { TasksManagementComponent } from './tasks-management/tasks-management.co
         ErrorDialogComponent,
         ConfirmDialogComponent,
         NotFoundComponent,
+        DemoComponent,
+        StartPageComponent,
+        WelcomeComponent
     ],
     imports: [
         FormsModule,
@@ -73,7 +81,8 @@ import { TasksManagementComponent } from './tasks-management/tasks-management.co
         AppMaterialModule,
         BrowserModule,
         BrowserAnimationsModule,
-        AppRoutingModule
+        AppRoutingModule,
+        CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
     ],
     providers: [
         ConfirmDialogService,

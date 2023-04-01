@@ -47,8 +47,6 @@ export class TasksManagementComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.getEmployee();
-        this.getProjects();
-        this.getTasks();
     }
 
     ngAfterViewInit() {

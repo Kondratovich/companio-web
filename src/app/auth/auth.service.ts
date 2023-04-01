@@ -51,7 +51,6 @@ export class AuthService {
     getUserId(): string {
         const token = this.cookieService.get('jwt');
         if (token) {
-            debugger;
             const decodedToken = this.jwtHelper.decodeToken(token);
             return decodedToken.nameid;
         }
