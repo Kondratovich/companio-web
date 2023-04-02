@@ -1,54 +1,98 @@
 <div class="row mt-4 mb-2">
-    <div class="w-50">
-        <div class="btn-group">
-            <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
-                Previous
-            </div>
-            <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
-                Today
-            </div>
-            <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
-                Next
-            </div>
-        </div>
-    </div>
-
-    <div class="w-50" style="text-align: right;">
-        <div class="btn-group">
-          <div
-            class="btn btn-primary"
-            (click)="setView(CalendarView.Month)"
-            [class.active]="view === CalendarView.Month"
-          >
-            Month
-          </div>
-          <div
-            class="btn btn-primary"
-            (click)="setView(CalendarView.Week)"
-            [class.active]="view === CalendarView.Week"
-          >
-            Week
-          </div>
-          <div
-            class="btn btn-primary"
-            (click)="setView(CalendarView.Day)"
-            [class.active]="view === CalendarView.Day"
-          >
-            Day
-          </div>
-        </div>
+  <div class="w-50">
+    <div class="btn-group">
+      <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()">
+        Previous
       </div>
+      <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+        Today
+      </div>
+      <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()">
+        Next
+      </div>
+    </div>
+  </div>
+
+  <div class="w-50" style="text-align: right;">
+    <div class="btn-group">
+      <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+        Month
+      </div>
+      <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+        Week
+      </div>
+      <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+        Day
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="text-center">
-    <h2>{{ viewDate | calendarDate:(view + 'ViewTitle'):'ru' }}</h2>
+  <h2>{{ viewDate | calendarDate:(view + 'ViewTitle'):'ru' }}</h2>
 </div>
 
 <div [ngSwitch]="view">
-    <mwl-calendar-month-view locale="ru" *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events">
-    </mwl-calendar-month-view>
-    <mwl-calendar-week-view locale="ru" *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events">
-    </mwl-calendar-week-view>
-    <mwl-calendar-day-view locale="ru" *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events">
-    </mwl-calendar-day-view>
+  <mwl-calendar-month-view [refresh]="refresh" locale="ru" *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events">
+  </mwl-calendar-month-view>
+  <mwl-calendar-week-view [refresh]="refresh" locale="ru" *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events">
+  </mwl-calendar-week-view>
+  <mwl-calendar-day-view [refresh]="refresh" locale="ru" *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events">
+  </mwl-calendar-day-view>
+</div>
+
+
+
+
+<h3 class="mt-4">
+  <button class="btn btn-primary" (click)="addEvent()">
+    Добавить отпуск
+  </button>
+  <div class="clearfix"></div>
+</h3>
+
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Название</th>
+        <th>Период</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let event of getEditableEvents()">
+        <td>
+          <input type="text" class="form-control" [(ngModel)]="event.title" (keyup)="onEventArrayChange()" />
+        </td>
+        <td>
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker" [min]="minDate" [max]="maxDate">
+              <input matStartDate [(ngModel)]="event.start" (ngModelChange)="onEventArrayChange()" placeholder="Start date">
+              <input matEndDate [(ngModel)]="event.end" (ngModelChange)="onEventArrayChange()" placeholder="End date">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </td>
+        <td>
+          <button class="btn btn-danger float-right" (click)="deleteEvent(event)">
+            Удалить
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="displaySaveButton">
+        <td colspan="3">
+          <button class="btn btn-success" (click)="openDialog()">
+            Сохранить
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
