@@ -21,6 +21,14 @@
     </mat-form-field>
 
     <mat-form-field class="d-block">
+        <mat-label>Организация</mat-label>
+        <input matInput formControlName="organizationControl" [value]="myForm.get('organizationControl')?.value">
+        <mat-error *ngIf="myForm.controls['organizationControl'].hasError('required')">
+            Название организации <strong>обязательно</strong>
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="d-block">
         <mat-label>Email</mat-label>
         <input type="email" matInput formControlName="emailControl" placeholder="email@example.com">
         <mat-error *ngIf="myForm.controls['emailControl'].hasError('email') && !myForm.controls['emailControl'].hasError('required')">

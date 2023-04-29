@@ -13,7 +13,7 @@ import { ErrorDialogService } from './../shared/components/error-dialog/error-di
     templateUrl: './customers-list.component.html'
 })
 export class CustomersListComponent implements OnInit, AfterViewInit {
-    readonly displayedColumns: string[] = ['email', 'firstName', 'lastName', 'actions'];
+    readonly displayedColumns: string[] = ['email', 'firstName', 'lastName', 'organization', 'actions'];
     readonly dataSource: MatTableDataSource<Customer> = new MatTableDataSource<Customer>();
 
     @ViewChild(MatSort) sort!: MatSort;

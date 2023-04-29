@@ -26,6 +26,7 @@ export class CustomerFormComponent implements OnInit {
             emailControl: ['', [Validators.required, Validators.email]],
             firstNameControl: ['', [Validators.required]],
             lastNameControl: ['', [Validators.required]],
+            organizationControl: ['', [Validators.required]],
         });
 
         const customerId = this.route.snapshot.paramMap.get('id');
@@ -41,7 +42,8 @@ export class CustomerFormComponent implements OnInit {
                 this.myForm.patchValue({
                     emailControl: this.customer.email,
                     firstNameControl: this.customer.firstName,
-                    lastNameControl: this.customer.lastName
+                    lastNameControl: this.customer.lastName,
+                    organizationControl: this.customer.organization,
                 });
             },
             error: error => this.errorDialogService.openDialog(error.message)
@@ -54,6 +56,7 @@ export class CustomerFormComponent implements OnInit {
             email: this.myForm.get('emailControl')?.value,
             firstName: this.myForm.get('firstNameControl')?.value,
             lastName: this.myForm.get('lastNameControl')?.value,
+            organization: this.myForm.get('organizationControl')?.value,
         };
 
         if (this.customer == null) {
