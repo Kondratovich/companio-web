@@ -7,10 +7,14 @@ import { MatSort } from '@angular/material/sort';
 import { CustomerService } from './customer.service';
 import { ConfirmDialogService } from './../shared/components/confirm-dialog/confirm-dialog.service';
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-customers-list',
-    templateUrl: './customers-list.component.html'
+    standalone: true,
+    templateUrl: './customers-list.component.html',
+    imports: [AppMaterialModule, RouterModule]
 })
 export class CustomersListComponent implements OnInit, AfterViewInit {
     readonly displayedColumns: string[] = ['email', 'firstName', 'lastName', 'organization', 'actions'];

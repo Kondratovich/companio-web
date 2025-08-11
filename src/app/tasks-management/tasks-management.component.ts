@@ -9,15 +9,16 @@ import { ConfirmDialogService } from './../shared/components/confirm-dialog/conf
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
 import { Project } from '../projects/project.model';
 import { ProjectService } from '../projects/project.service';
-import { TeamService } from '../teams/team.service';
-import { Team } from '../teams/team.model';
 import { EmployeeService } from '../employees/employee.service';
 import { AuthService } from '../auth/auth.service';
 import { Employee } from '../employees/employee.model';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-tasks-management',
-    templateUrl: './tasks-management.component.html'
+    templateUrl: './tasks-management.component.html',
+    imports: [AppMaterialModule, CommonModule]
 })
 export class TasksManagementComponent implements OnInit, AfterViewInit {
     readonly displayedColumns: string[] = ['name', 'project', 'description', 'status', 'actions'];

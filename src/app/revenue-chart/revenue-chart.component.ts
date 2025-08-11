@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Project } from '../projects/project.model';
 import { ProjectService } from '../projects/project.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'revenue-chart',
-  templateUrl: './revenue-chart.component.html'
+  templateUrl: './revenue-chart.component.html',
+  imports: [NgxChartsModule]
 })
 export class RevenueChartComponent implements OnInit {
   projects!: Project[];

@@ -4,10 +4,10 @@ import {
   OnInit,
   ChangeDetectorRef,
 } from '@angular/core';
-import { CalendarEvent, CalendarView } from 'angular-calendar';
+import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import localeRu from '@angular/common/locales/ru'; // to register french
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { startOfDay, endOfDay, isSameMonth, isSameDay } from 'date-fns';
 import { Subject } from 'rxjs';
 import { AbsenceTimelineService } from './absenceTimeline.service';
@@ -15,6 +15,8 @@ import { AuthService } from '../auth/auth.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 import { Absence, AbsenceTimeline } from './absenceTimeline.model';
 import { ConfirmDialogService } from '../shared/components/confirm-dialog/confirm-dialog.service';
+import { AppMaterialModule } from "../shared/modules/app.material.module";
+import { FormsModule } from '@angular/forms';
 
 interface Holiday {
   date: string;
@@ -29,6 +31,7 @@ type CalendarEventWithMeta = CalendarEvent<
   selector: 'mwl-demo-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './absence-calendar.component.html',
+  imports: [AppMaterialModule, CalendarModule, CommonModule, FormsModule],
 })
 export class DemoComponent implements OnInit {
   view: CalendarView = CalendarView.Month;

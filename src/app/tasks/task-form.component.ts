@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Task, TaskStatus } from './task.model';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TaskService } from './task.service';
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
 import { ProjectService } from '../projects/project.service';
 import { Project } from '../projects/project.model';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-task-form',
-    templateUrl: './task-form.component.html'
+    templateUrl: './task-form.component.html',
+    imports: [AppMaterialModule, ReactiveFormsModule, CommonModule]
 })
 export class TaskFormComponent implements OnInit {
     projects?: Project[];

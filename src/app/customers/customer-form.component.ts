@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from './customer.model';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CustomerService } from './customer.service';
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-customer-form',
-    templateUrl: './customer-form.component.html'
+    templateUrl: './customer-form.component.html',
+    imports: [AppMaterialModule, ReactiveFormsModule, CommonModule]
 })
 export class CustomerFormComponent implements OnInit {
     customer?: Customer;

@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Project } from './project.model';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ProjectService } from './project.service';
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
 import { Team } from '../teams/team.model';
 import { TeamService } from '../teams/team.service';
 import { CustomerService } from '../customers/customer.service';
 import { Customer } from '../customers/customer.model';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-project-form',
-    templateUrl: './project-form.component.html'
+    templateUrl: './project-form.component.html',
+    imports: [AppMaterialModule, CommonModule, ReactiveFormsModule]
 })
 export class ProjectFormComponent implements OnInit {
     project?: Project;

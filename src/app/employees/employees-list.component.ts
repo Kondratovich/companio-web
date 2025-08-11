@@ -10,16 +10,20 @@ import { ErrorDialogService } from '../shared/components/error-dialog/error-dial
 import { TeamService } from '../teams/team.service';
 import { Team } from '../teams/team.model';
 import { AuthService } from '../auth/auth.service';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-employees-list',
-    templateUrl: './employees-list.component.html'
+    templateUrl: './employees-list.component.html',
+    imports: [AppMaterialModule, RouterModule, CommonModule]
 })
 export class EmployeesListComponent implements OnInit, AfterViewInit {
     readonly displayedColumns: string[] = ['email', 'firstName', 'lastName', 'role', 'team', 'actions'];
     readonly dataSource: MatTableDataSource<Employee> = new MatTableDataSource<Employee>();
     teams!: Team[];
-    userRole = this.authService.getUserRole();
+    userRole!: string;
 
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -30,7 +34,9 @@ export class EmployeesListComponent implements OnInit, AfterViewInit {
         private dialogService: ConfirmDialogService,
         private errorDialogService: ErrorDialogService,
         private authService: AuthService,
-    ) { }
+    ) {
+        this.userRole = this.authService.getUserRole();
+    }
 
     ngOnInit(): void {
         this.getTeams();

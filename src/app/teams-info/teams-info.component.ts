@@ -10,6 +10,8 @@ import { EmployeeService } from '../employees/employee.service';
 import { Team } from '../teams/team.model';
 import { Employee, Role } from '../employees/employee.model';
 import { MatPaginator } from '@angular/material/paginator';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-teams-info',
@@ -21,6 +23,7 @@ import { MatPaginator } from '@angular/material/paginator';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  imports: [AppMaterialModule, CommonModule, DatePipe]
 })
 export class TeamsInfoComponent implements OnInit {
   readonly columnsToDisplay: string[] = ['name', 'description'];

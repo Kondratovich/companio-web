@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from './employee.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmployeeService } from './employee.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 import { TeamService } from '../teams/team.service';
 import { Team } from '../teams/team.model';
+import { AppMaterialModule } from "../shared/modules/app.material.module";
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-employee-form',
-    templateUrl: './employee-form.component.html'
+    templateUrl: './employee-form.component.html',
+    imports: [AppMaterialModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class EmployeeFormComponent implements OnInit {
     employee?: Employee;

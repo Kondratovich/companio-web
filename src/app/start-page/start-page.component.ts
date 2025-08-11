@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { CommonModule } from '@angular/common';
 
 interface NasaPicture {
     hdurl: string;
@@ -10,7 +11,8 @@ interface NasaPicture {
 
 @Component({
     selector: 'app-start-page',
-    templateUrl: './start-page.component.html'
+    templateUrl: './start-page.component.html',
+    imports: [CommonModule, RouterModule]
 })
 export class StartPageComponent implements OnInit {
     constructor(

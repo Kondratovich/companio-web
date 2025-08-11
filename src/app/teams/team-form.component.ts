@@ -1,17 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Team } from './team.model';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { TeamService } from './team.service';
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
 import { Project } from '../projects/project.model';
 import { Employee } from '../employees/employee.model';
 import { ProjectService } from '../projects/project.service';
 import { EmployeeService } from '../employees/employee.service';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-team-form',
-    templateUrl: './team-form.component.html'
+    standalone: true,
+    templateUrl: './team-form.component.html',
+    imports: [AppMaterialModule, CommonModule, ReactiveFormsModule]
 })
 export class TeamFormComponent implements OnInit {
     team?: Team;

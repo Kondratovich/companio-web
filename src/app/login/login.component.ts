@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Role } from '../employees/employee.model';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 import { LoginModel } from './login.model';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  imports: [AppMaterialModule, ReactiveFormsModule, CommonModule]
 })
 export class LoginComponent implements OnInit {
   myForm!: FormGroup;

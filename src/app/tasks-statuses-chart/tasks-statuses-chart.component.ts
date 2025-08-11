@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 import { Task, TaskStatus } from '../tasks/task.model';
 import { TaskService } from '../tasks/task.service';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'tasks-statuses-chart',
-  templateUrl: './tasks-statuses-chart.component.html'
+  templateUrl: './tasks-statuses-chart.component.html',
+  imports: [NgxChartsModule]
 })
 export class TasksStatusesChartComponent implements OnInit {
   tasks!: Task[];

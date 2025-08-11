@@ -12,6 +12,8 @@ import { CustomerService } from '../customers/customer.service';
 import { Team } from '../teams/team.model';
 import { TeamService } from '../teams/team.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-projects-info',
@@ -23,6 +25,7 @@ import { MatPaginator } from '@angular/material/paginator';
             transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
         ]),
     ],
+    imports: [AppMaterialModule, DatePipe, CurrencyPipe, CommonModule]
 })
 export class ProjectsInfoComponent implements OnInit {
     readonly columnsToDisplay: string[] = ['name', 'description', 'team', 'customer', 'dateAdded', 'deadline', 'price'];

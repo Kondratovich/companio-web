@@ -1,5 +1,4 @@
-import { inject, NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { ProjectsListComponent } from './projects/projects-list.component';
 import { EmployeesListComponent } from './employees/employees-list.component';
 import { CustomersListComponent } from './customers/customers-list.component';
@@ -27,7 +26,7 @@ import { DemoComponent } from './absence-calendar/absence-calendar.component';
 import { StartPageComponent } from './start-page/start-page.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: StartPageComponent,
@@ -104,9 +103,3 @@ const routes: Routes = [
   },
   { path: '**', component: NotFoundComponent, canActivate: [AuthGuard] },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

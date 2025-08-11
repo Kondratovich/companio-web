@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
-import { environment } from 'src/enviroments/enviroment';
+import { environment } from "../../enviroments/enviroment"
 import { catchError, map, tap, throwError } from 'rxjs';
 
 @Injectable({

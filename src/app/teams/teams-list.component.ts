@@ -7,10 +7,13 @@ import { MatSort } from '@angular/material/sort';
 import { TeamService } from './team.service';
 import { ConfirmDialogService } from './../shared/components/confirm-dialog/confirm-dialog.service';
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-teams-list',
-    templateUrl: './teams-list.component.html'
+    templateUrl: './teams-list.component.html',
+    imports: [AppMaterialModule, RouterModule]
 })
 export class TeamsListComponent implements OnInit, AfterViewInit {
     readonly displayedColumns: string[] = ['name', 'description', 'actions'];

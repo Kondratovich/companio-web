@@ -11,10 +11,14 @@ import { CustomerService } from '../customers/customer.service';
 import { TeamService } from '../teams/team.service';
 import { Customer } from '../customers/customer.model';
 import { Team } from '../teams/team.model';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-projects-list',
-    templateUrl: './projects-list.component.html'
+    templateUrl: './projects-list.component.html',
+    imports: [AppMaterialModule, DatePipe, CurrencyPipe, RouterModule]
 })
 export class ProjectsListComponent implements OnInit, AfterViewInit {
     readonly displayedColumns: string[] = ['name', 'description', 'team', 'customer', 'dateAdded', 'deadline', 'price', 'actions'];

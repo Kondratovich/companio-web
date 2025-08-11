@@ -9,10 +9,13 @@ import { ConfirmDialogService } from './../shared/components/confirm-dialog/conf
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
 import { Project } from '../projects/project.model';
 import { ProjectService } from '../projects/project.service';
+import { AppMaterialModule } from '../shared/modules/app.material.module';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-tasks-list',
-    templateUrl: './tasks-list.component.html'
+    templateUrl: './tasks-list.component.html',
+    imports: [AppMaterialModule, RouterModule]
 })
 export class TasksListComponent implements OnInit, AfterViewInit {
     readonly displayedColumns: string[] = ['name', 'project', 'description', 'status', 'actions'];

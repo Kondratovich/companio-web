@@ -1,12 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { LegendPosition } from '@swimlane/ngx-charts';
+import { LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
 import { Project } from '../projects/project.model';
 import { ProjectService } from '../projects/project.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 
 @Component({
   selector: 'app-projects-prices-chart',
-  templateUrl: './projects-prices-chart.component.html'
+  templateUrl: './projects-prices-chart.component.html',
+  imports: [NgxChartsModule]
 })
 export class ProjectsPricesChartComponent implements OnInit {
   projects!: Project[];
