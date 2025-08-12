@@ -3,20 +3,21 @@ import {
   ChangeDetectionStrategy,
   OnInit,
   ChangeDetectorRef,
+  inject,
 } from '@angular/core';
 import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import localeRu from '@angular/common/locales/ru'; // to register french
 import { CommonModule, registerLocaleData } from '@angular/common';
-import { startOfDay, endOfDay, isSameMonth, isSameDay } from 'date-fns';
+import { startOfDay, endOfDay } from 'date-fns';
 import { Subject } from 'rxjs';
 import { AbsenceTimelineService } from './absenceTimeline.service';
-import { AuthService } from '../auth/auth.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 import { Absence, AbsenceTimeline } from './absenceTimeline.model';
 import { ConfirmDialogService } from '../shared/components/confirm-dialog/confirm-dialog.service';
 import { AppMaterialModule } from "../shared/modules/app.material.module";
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../auth/auth.service';
 
 interface Holiday {
   date: string;
@@ -28,7 +29,7 @@ type CalendarEventWithMeta = CalendarEvent<
 >;
 
 @Component({
-  selector: 'mwl-demo-component',
+  selector: 'app-absence-calendar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './absence-calendar.component.html',
   imports: [AppMaterialModule, CalendarModule, CommonModule, FormsModule],
@@ -36,22 +37,21 @@ type CalendarEventWithMeta = CalendarEvent<
 export class DemoComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen = true;
   viewDate: Date = new Date();
   events: CalendarEventWithMeta[] = [];
   absenceTimeline!: AbsenceTimeline;
   refresh = new Subject<void>();
-  displaySaveButton: boolean = false;
+  displaySaveButton = false;
   minDate: Date = new Date();
   maxDate: Date = new Date(this.minDate.getFullYear() + 1, 0, 0);
 
-  constructor(
-    private http: HttpClient,
-    private cdr: ChangeDetectorRef,
-    private auhtService: AuthService,
-    private errorDialogService: ErrorDialogService,
-    private dialogService: ConfirmDialogService,
-    private absenceTimelineService: AbsenceTimelineService) { }
+  private http = inject(HttpClient);
+  private cdr = inject(ChangeDetectorRef);
+  private errorDialogService = inject(ErrorDialogService);
+  private dialogService = inject(ConfirmDialogService);
+  private absenceTimelineService = inject(AbsenceTimelineService);
+  private auhtService = inject(AuthService);
 
   ngOnInit(): void {
     registerLocaleData(localeRu);
@@ -117,7 +117,7 @@ export class DemoComponent implements OnInit {
         next: absenceTimelines => {
 
           if (absenceTimelines.length == 0)
-            this.errorDialogService.openDialog("Отсутсвует AbsenceTimeline для пользователя ;( ");
+            this.errorDialogService.open("Отсутсвует AbsenceTimeline для пользователя ;( ");
 
           this.absenceTimeline = absenceTimelines[0];
           absenceTimelines[0].absences?.forEach(element => {
@@ -136,7 +136,7 @@ export class DemoComponent implements OnInit {
           });
           this.cdr.markForCheck();
         },
-        error: error => this.errorDialogService.openDialog(error.message)
+        error: error => this.errorDialogService.open(error.message)
       });
   }
 
@@ -151,7 +151,7 @@ export class DemoComponent implements OnInit {
     });
 
     this.absenceTimelineService.updateAbsenceTimeline(this.absenceTimeline).subscribe({
-      error: error => this.errorDialogService.openDialog(error.message)
+      error: error => this.errorDialogService.open(error.message)
     });
     this.displaySaveButton = true;
   }

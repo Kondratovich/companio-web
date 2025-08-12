@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
+import { Component, inject, OnInit } from '@angular/core';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Project } from '../projects/project.model';
 import { ProjectService } from '../projects/project.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
@@ -10,13 +10,11 @@ import { ErrorDialogService } from '../shared/components/error-dialog/error-dial
   imports: [NgxChartsModule]
 })
 export class ProjectsPricesChartComponent implements OnInit {
+  private projectService = inject(ProjectService);
+  private errorDialogService = inject(ErrorDialogService);
+
   projects!: Project[];
   chartData: { name: string, value: number }[] = [];
-
-  constructor(
-    private projectService: ProjectService,
-    private errorDialogService: ErrorDialogService
-  ) { }
 
   ngOnInit(): void {
     this.getProjects();
@@ -26,10 +24,10 @@ export class ProjectsPricesChartComponent implements OnInit {
     this.projectService.getProjects()
       .subscribe({
         next: projects => {
-          this.projects = projects,
-            this.updateChartData();
+          this.projects = projects;
+          this.updateChartData();
         },
-        error: error => this.errorDialogService.openDialog(error.message)
+        error: error => this.errorDialogService.open(error.message)
       });
   }
 

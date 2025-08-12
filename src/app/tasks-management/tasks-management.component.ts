@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { Task, TaskStatus } from './../tasks/task.model';
 import { ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
@@ -16,137 +16,135 @@ import { AppMaterialModule } from '../shared/modules/app.material.module';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-tasks-management',
-    templateUrl: './tasks-management.component.html',
-    imports: [AppMaterialModule, CommonModule]
+  selector: 'app-tasks-management',
+  templateUrl: './tasks-management.component.html',
+  imports: [AppMaterialModule, CommonModule]
 })
 export class TasksManagementComponent implements OnInit, AfterViewInit {
-    readonly displayedColumns: string[] = ['name', 'project', 'description', 'status', 'actions'];
-    readonly dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>();
-    projects!: Project[];
-    employee!: Employee;
+  private taskService = inject(TaskService);
+  private authService = inject(AuthService);
+  private employeeService = inject(EmployeeService);
+  private projectService = inject(ProjectService);
+  private dialogService = inject(ConfirmDialogService);
+  private errorDialogService = inject(ErrorDialogService);
+  
+  readonly displayedColumns: string[] = ['name', 'project', 'description', 'status', 'actions'];
+  readonly dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>();
+  projects!: Project[];
+  employee!: Employee;
 
-    @ViewChild(MatSort) sort!: MatSort;
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-    constructor(
-        private taskService: TaskService,
-        private auhtService: AuthService,
-        private employeeService: EmployeeService,
-        private projectService: ProjectService,
-        private dialogService: ConfirmDialogService,
-        private errorDialogService: ErrorDialogService
-    ) { }
-
-    getColor(status: TaskStatus): string {
-        switch (status) {
-            case TaskStatus.NotStarted: return "";
-            case TaskStatus.InProgress: return "#dce8f9";
-            case TaskStatus.Done: return "#86efb0";
-        }
+  getColor(status: TaskStatus): string {
+    switch (status) {
+      case TaskStatus.NotStarted: return "";
+      case TaskStatus.InProgress: return "#dce8f9";
+      case TaskStatus.Done: return "#86efb0";
     }
+  }
 
-    ngOnInit(): void {
-        this.getEmployee();
+  ngOnInit(): void {
+    this.getEmployee();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
+  }
 
-    ngAfterViewInit() {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-    }
+  openMarkTaskAsDoneDialog(task: Task) {
+    const options = {
+      title: 'Ометить задачу как выполненную?',
+      message: 'Вы уверены?',
+      cancelText: 'Нет',
+      confirmText: 'Да'
+    };
 
-    applyFilter(event: Event) {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dialogService.open(options);
 
-        if (this.dataSource.paginator) {
-            this.dataSource.paginator.firstPage();
-        }
-    }
+    this.dialogService.confirmed().subscribe(confirmed => {
+      if (confirmed) {
+        this.markTaskAsDone(task);
+      }
+    });
+  }
 
-    openMarkTaskAsDoneDialog(task: Task) {
-        const options = {
-            title: 'Ометить задачу как выполненную?',
-            message: 'Вы уверены?',
-            cancelText: 'Нет',
-            confirmText: 'Да'
-        };
+  openMoveToInProgressDialog(task: Task) {
+    const options = {
+      title: 'Переместить задач в состояние выполнения?',
+      message: 'Вы уверены?',
+      cancelText: 'Нет',
+      confirmText: 'Да'
+    };
 
-        this.dialogService.open(options);
+    this.dialogService.open(options);
 
-        this.dialogService.confirmed().subscribe(confirmed => {
-            if (confirmed) {
-                this.markTaskAsDone(task);
-            }
-        });
-    }
+    this.dialogService.confirmed().subscribe(confirmed => {
+      if (confirmed) {
+        this.moveTaskToInProgress(task);
+      }
+    });
+  }
 
-    openMoveToInProgressDialog(task: Task) {
-        const options = {
-            title: 'Переместить задач в состояние выполнения?',
-            message: 'Вы уверены?',
-            cancelText: 'Нет',
-            confirmText: 'Да'
-        };
+  markTaskAsDone(task: Task): void {
+    task.status = TaskStatus.Done;
+    this.taskService.updateTask(task).subscribe({
+      error: error => this.errorDialogService.open(error.message)
+    });
+  }
 
-        this.dialogService.open(options);
+  moveTaskToInProgress(task: Task): void {
+    task.status = TaskStatus.InProgress;
+    this.taskService.updateTask(task).subscribe({
+      error: error => this.errorDialogService.open(error.message)
+    });
+  }
 
-        this.dialogService.confirmed().subscribe(confirmed => {
-            if (confirmed) {
-                this.moveTaskToInProgress(task);
-            }
-        });
-    }
+  getEmployee(): void {
+    this.employeeService.getEmployee(this.authService.getUserId())
+      .subscribe({
+        next: employee => {
+          this.employee = employee;
+          this.getProjects();
+        },
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-    markTaskAsDone(task: Task): void {
-        task.status = TaskStatus.Done;
-        this.taskService.updateTask(task).subscribe({
-            error: error => this.errorDialogService.openDialog(error.message)
-        });
-    }
+  getProjects(): void {
+    this.projectService.getProjects()
+      .subscribe({
+        next: projects => {
+          this.projects = projects.filter(p => p.teamId == this.employee.teamId)
+          this.getTasks()
+        },
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-    moveTaskToInProgress(task: Task): void {
-        task.status = TaskStatus.InProgress;
-        this.taskService.updateTask(task).subscribe({
-            error: error => this.errorDialogService.openDialog(error.message)
-        });
-    }
+  getTasks(): void {
+    this.taskService.getTasks()
+      .subscribe({
+        next: tasks => this.dataSource.data = tasks.filter(t => this.projects.map(p => p.id).includes(t.projectId)),
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-    getEmployee(): void {
-        this.employeeService.getEmployee(this.auhtService.getUserId())
-            .subscribe({
-                next: employee => {
-                    this.employee = employee;
-                    this.getProjects();
-                },
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
+  getTaskStatusName(status: number): string {
+    return TaskStatus[status];
+  }
 
-    getProjects(): void {
-        this.projectService.getProjects()
-            .subscribe({
-                next: projects => {
-                    this.projects = projects.filter(p => p.teamId == this.employee.teamId)
-                    this.getTasks()
-                },
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
-
-    getTasks(): void {
-        this.taskService.getTasks()
-            .subscribe({
-                next: tasks => this.dataSource.data = tasks.filter(t => this.projects.map(p => p.id).includes(t.projectId)),
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
-
-    getTaskStatusName(status: number): string {
-        return TaskStatus[status];
-    }
-
-    getProjectName(projectId: string): string | undefined {
-        return this.projects?.find(project => project.id === projectId)?.name;
-    }
+  getProjectName(projectId: string): string | undefined {
+    return this.projects?.find(project => project.id === projectId)?.name;
+  }
 }

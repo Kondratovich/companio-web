@@ -1,22 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 import { Task, TaskStatus } from '../tasks/task.model';
 import { TaskService } from '../tasks/task.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
-  selector: 'tasks-statuses-chart',
+  selector: 'app-tasks-statuses-chart',
   templateUrl: './tasks-statuses-chart.component.html',
   imports: [NgxChartsModule]
 })
 export class TasksStatusesChartComponent implements OnInit {
+  private taskService = inject(TaskService);
+  private errorDialogService = inject(ErrorDialogService);
+
   tasks!: Task[];
   chartData: { name: string, value: number }[] = [];
-
-  constructor(
-    private taskService: TaskService,
-    private errorDialogService: ErrorDialogService
-  ) { }
 
   ngOnInit(): void {
     this.getProjects();
@@ -26,10 +24,10 @@ export class TasksStatusesChartComponent implements OnInit {
     this.taskService.getTasks()
       .subscribe({
         next: tasks => {
-          this.tasks = tasks,
-            this.updateChartData();
+          this.tasks = tasks;
+          this.updateChartData();
         },
-        error: error => this.errorDialogService.openDialog(error.message)
+        error: error => this.errorDialogService.open(error.message)
       });
   }
 

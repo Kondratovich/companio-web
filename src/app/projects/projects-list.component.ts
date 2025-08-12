@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { ProjectService } from './project.service';
 import { ConfirmDialogService } from './../shared/components/confirm-dialog/confirm-dialog.service';
 import { ErrorDialogService } from './../shared/components/error-dialog/error-dialog.service';
@@ -16,102 +16,100 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'app-projects-list',
-    templateUrl: './projects-list.component.html',
-    imports: [AppMaterialModule, DatePipe, CurrencyPipe, RouterModule]
+  selector: 'app-projects-list',
+  templateUrl: './projects-list.component.html',
+  imports: [AppMaterialModule, DatePipe, CurrencyPipe, RouterModule]
 })
 export class ProjectsListComponent implements OnInit, AfterViewInit {
-    readonly displayedColumns: string[] = ['name', 'description', 'team', 'customer', 'dateAdded', 'deadline', 'price', 'actions'];
-    readonly dataSource: MatTableDataSource<Project> = new MatTableDataSource<Project>();
-    teams!: Team[];
-    customers!: Customer[];
+  private projectService = inject(ProjectService);
+  private customerService = inject(CustomerService);
+  private teamService = inject(TeamService);
+  private dialogService = inject(ConfirmDialogService);
+  private errorDialogService = inject(ErrorDialogService);
 
-    @ViewChild(MatSort) sort!: MatSort;
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
+  readonly displayedColumns: string[] = ['name', 'description', 'team', 'customer', 'dateAdded', 'deadline', 'price', 'actions'];
+  readonly dataSource: MatTableDataSource<Project> = new MatTableDataSource<Project>();
+  teams!: Team[];
+  customers!: Customer[];
 
-    constructor(
-        private projectService: ProjectService,
-        private customerService: CustomerService,
-        private teamService: TeamService,
-        private dialogService: ConfirmDialogService,
-        private errorDialogService: ErrorDialogService
-    ) { }
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-    ngOnInit(): void {
-        this.getCustomers();
-        this.getTeams();
-        this.getProjects();
+  ngOnInit(): void {
+    this.getCustomers();
+    this.getTeams();
+    this.getProjects();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
+  }
 
-    ngAfterViewInit() {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-    }
+  openDialog(projectId: string) {
+    const options = {
+      title: 'Удалить проект',
+      message: 'Вы уверены?',
+      cancelText: 'Нет',
+      confirmText: 'Да'
+    };
 
-    applyFilter(event: Event) {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dialogService.open(options);
 
-        if (this.dataSource.paginator) {
-            this.dataSource.paginator.firstPage();
-        }
-    }
+    this.dialogService.confirmed().subscribe(confirmed => {
+      if (confirmed) {
+        this.deleteProject(projectId);
+      }
+    });
+  }
 
-    openDialog(projectId: string) {
-        const options = {
-            title: 'Удалить проект',
-            message: 'Вы уверены?',
-            cancelText: 'Нет',
-            confirmText: 'Да'
-        };
+  getProjects(): void {
+    this.projectService.getProjects()
+      .subscribe({
+        next: projects => this.dataSource.data = projects,
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-        this.dialogService.open(options);
+  getTeams(): void {
+    this.teamService.getTeams()
+      .subscribe({
+        next: teams => this.teams = teams,
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-        this.dialogService.confirmed().subscribe(confirmed => {
-            if (confirmed) {
-                this.deleteProject(projectId);
-            }
-        });
-    }
+  getCustomers(): void {
+    this.customerService.getCustomers()
+      .subscribe({
+        next: customers => this.customers = customers,
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-    getProjects(): void {
-        this.projectService.getProjects()
-            .subscribe({
-                next: projects => this.dataSource.data = projects,
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
+  deleteProject(projectId: string) {
+    this.projectService.deleteProject(projectId)
+      .subscribe({
+        next: () => this.dataSource.data = this.dataSource.data.filter(project => project.id !== projectId),
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-    getTeams(): void {
-        this.teamService.getTeams()
-            .subscribe({
-                next: teams => this.teams = teams,
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
+  getTeamName(teamId: string): string | undefined {
+    return this.teams?.find(team => team.id === teamId)?.name;
+  }
 
-    getCustomers(): void {
-        this.customerService.getCustomers()
-            .subscribe({
-                next: customers => this.customers = customers,
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
-
-    deleteProject(projectId: string) {
-        this.projectService.deleteProject(projectId)
-            .subscribe({
-                next: () => this.dataSource.data = this.dataSource.data.filter(project => project.id !== projectId),
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
-
-    getTeamName(teamId: string): string | undefined {
-        return this.teams?.find(team => team.id === teamId)?.name;
-    }
-
-    getCustomerName(customerId: string): string | undefined {
-        let customer = this.customers?.find(customer => customer.id === customerId);
-        return customer?.firstName + ' ' + customer?.lastName;
-    }
+  getCustomerName(customerId: string): string | undefined {
+    const customer = this.customers?.find(customer => customer.id === customerId);
+    return customer?.firstName + ' ' + customer?.lastName;
+  }
 }

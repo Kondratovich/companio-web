@@ -1,22 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Project } from '../projects/project.model';
 import { ProjectService } from '../projects/project.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
-  selector: 'revenue-chart',
+  selector: 'app-revenue-chart',
   templateUrl: './revenue-chart.component.html',
   imports: [NgxChartsModule]
 })
 export class RevenueChartComponent implements OnInit {
+  private projectService = inject(ProjectService);
+  private errorDialogService = inject(ErrorDialogService);
+
   projects!: Project[];
   chartData: { name: string, series: { value: number, name: string | undefined }[] }[] = [];
-
-  constructor(
-    private projectService: ProjectService,
-    private errorDialogService: ErrorDialogService
-  ) { }
 
   ngOnInit(): void {
     this.getProjects();
@@ -26,10 +24,10 @@ export class RevenueChartComponent implements OnInit {
     this.projectService.getProjects()
       .subscribe({
         next: projects => {
-          this.projects = projects,
-            this.updateChartData();
+          this.projects = projects;
+          this.updateChartData();
         },
-        error: error => this.errorDialogService.openDialog(error.message)
+        error: error => this.errorDialogService.open(error.message)
       });
   }
 
@@ -38,14 +36,14 @@ export class RevenueChartComponent implements OnInit {
       name: "Доход ($)",
       series: []
     }];
-    
+
     this.projects.sort((a, b) => {
       const dateA = new Date(a.dateAdded || 0);
       const dateB = new Date(b.dateAdded || 0);
       return dateA.getTime() - dateB.getTime();
     });
 
-    var totalPrice = 0;
+    let totalPrice = 0;
     this.projects.forEach(project => {
       totalPrice += project.price;
       this.chartData[0].series.push({ name: project.dateAdded?.toString().substring(0, 10), value: totalPrice });

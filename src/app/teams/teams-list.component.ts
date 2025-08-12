@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { Team } from './team.model';
 import { ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,71 +11,69 @@ import { AppMaterialModule } from '../shared/modules/app.material.module';
 import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'app-teams-list',
-    templateUrl: './teams-list.component.html',
-    imports: [AppMaterialModule, RouterModule]
+  selector: 'app-teams-list',
+  templateUrl: './teams-list.component.html',
+  imports: [AppMaterialModule, RouterModule]
 })
 export class TeamsListComponent implements OnInit, AfterViewInit {
-    readonly displayedColumns: string[] = ['name', 'description', 'actions'];
-    readonly dataSource: MatTableDataSource<Team> = new MatTableDataSource<Team>();
+  private teamService = inject(TeamService);
+  private dialogService = inject(ConfirmDialogService);
+  private errorDialogService = inject(ErrorDialogService);
 
-    @ViewChild(MatSort) sort!: MatSort;
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
+  readonly displayedColumns: string[] = ['name', 'description', 'actions'];
+  readonly dataSource: MatTableDataSource<Team> = new MatTableDataSource<Team>();
 
-    constructor(
-        private teamService: TeamService,
-        private dialogService: ConfirmDialogService,
-        private errorDialogService: ErrorDialogService
-    ) { }
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-    ngOnInit(): void {
-        this.getTeams();
+  ngOnInit(): void {
+    this.getTeams();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
+  }
 
-    ngAfterViewInit() {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-    }
+  openDialog(teamId: string) {
+    const options = {
+      title: 'Удалить заказчика',
+      message: 'Вы уверены?',
+      cancelText: 'Нет',
+      confirmText: 'Да'
+    };
 
-    applyFilter(event: Event) {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dialogService.open(options);
 
-        if (this.dataSource.paginator) {
-            this.dataSource.paginator.firstPage();
-        }
-    }
+    this.dialogService.confirmed().subscribe(confirmed => {
+      if (confirmed) {
+        this.deleteTeam(teamId);
+      }
+    });
+  }
 
-    openDialog(teamId: string) {
-        const options = {
-            title: 'Удалить заказчика',
-            message: 'Вы уверены?',
-            cancelText: 'Нет',
-            confirmText: 'Да'
-        };
+  getTeams(): void {
+    this.teamService.getTeams()
+      .subscribe({
+        next: teams => this.dataSource.data = teams,
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-        this.dialogService.open(options);
-
-        this.dialogService.confirmed().subscribe(confirmed => {
-            if (confirmed) {
-                this.deleteTeam(teamId);
-            }
-        });
-    }
-
-    getTeams(): void {
-        this.teamService.getTeams()
-            .subscribe({
-                next: teams => this.dataSource.data = teams,
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
-
-    deleteTeam(teamId: string) {
-        this.teamService.deleteTeam(teamId)
-            .subscribe({
-                next: () => this.dataSource.data = this.dataSource.data.filter(team => team.id !== teamId),
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
+  deleteTeam(teamId: string) {
+    this.teamService.deleteTeam(teamId)
+      .subscribe({
+        next: () => this.dataSource.data = this.dataSource.data.filter(team => team.id !== teamId),
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 }

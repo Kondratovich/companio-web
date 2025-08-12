@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Role } from '../employees/employee.model';
@@ -14,16 +14,14 @@ import { CommonModule } from '@angular/common';
   imports: [AppMaterialModule, ReactiveFormsModule, CommonModule]
 })
 export class LoginComponent implements OnInit {
+  private formBuilder = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private errorDialogService = inject(ErrorDialogService);
+
   myForm!: FormGroup;
   loginModel?: LoginModel;
-  showPassword: boolean = false;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private errorDialogService: ErrorDialogService
-  ) { }
+  showPassword = false;
 
   ngOnInit(): void {
     this.myForm = this.formBuilder.group({
@@ -56,7 +54,7 @@ export class LoginComponent implements OnInit {
             break;
         }
       },
-      error: error => this.errorDialogService.openDialog(error.message)
+      error: error => this.errorDialogService.open(error.message)
     });
   }
 

@@ -1,42 +1,55 @@
-<form [formGroup]="myForm" novalidate (ngSubmit)="submit()" class="mat-elevation-z8 mt-4 p-4 w-50"
-    style="margin: auto;">
+<form [formGroup]="myForm" novalidate (ngSubmit)="submit()" class="mat-elevation-z8 mt-4 p-4 w-50" style="margin: auto;">
 
-    <h1 *ngIf="customer == null" class="text-center">Добавить заказчика</h1>
-    <h1 *ngIf="customer != null" class="text-center">Редактировать заказчика</h1>
-
-    <mat-form-field class="w-50">
-        <mat-label>Имя</mat-label>
-        <input matInput formControlName="firstNameControl" [value]="myForm.get('firstNameControl')?.value">
-        <mat-error *ngIf="myForm.controls['firstNameControl'].hasError('required')">
-            Имя <strong>обязательно</strong>
-        </mat-error>
-    </mat-form-field>
+    @if (customer === null) {
+      <h1 class="text-center">Добавить заказчика</h1>
+    }
+    @else {
+      <h1 class="text-center">Редактировать заказчика</h1>
+    }
 
     <mat-form-field class="w-50">
-        <mat-label>Фамилия</mat-label>
-        <input matInput formControlName="lastNameControl" [value]="myForm.get('lastNameControl')?.value">
-        <mat-error *ngIf="myForm.controls['lastNameControl'].hasError('required')">
-            Фамилия <strong>обязательна</strong>
+      <mat-label>Имя</mat-label>
+      <input matInput formControlName="firstNameControl" [value]="myForm.get('firstNameControl')?.value">
+      @if (myForm.controls['firstNameControl'].hasError('required')) {
+        <mat-error>
+          Имя <strong>обязательно</strong>
         </mat-error>
+      }
     </mat-form-field>
 
-    <mat-form-field class="d-block">
-        <mat-label>Организация</mat-label>
-        <input matInput formControlName="organizationControl" [value]="myForm.get('organizationControl')?.value">
-        <mat-error *ngIf="myForm.controls['organizationControl'].hasError('required')">
-            Название организации <strong>обязательно</strong>
+    <mat-form-field class="w-50">
+      <mat-label>Фамилия</mat-label>
+      <input matInput formControlName="lastNameControl" [value]="myForm.get('lastNameControl')?.value">
+      @if (myForm.controls['lastNameControl'].hasError('required')) {
+        <mat-error>
+          Фамилия <strong>обязательна</strong>
         </mat-error>
+      }
     </mat-form-field>
-
+    
     <mat-form-field class="d-block">
-        <mat-label>Email</mat-label>
-        <input type="email" matInput formControlName="emailControl" placeholder="email@example.com">
-        <mat-error *ngIf="myForm.controls['emailControl'].hasError('email') && !myForm.controls['emailControl'].hasError('required')">
-            Пожалуйста, введите корректный адрес
+      <mat-label>Организация</mat-label>
+      <input matInput formControlName="organizationControl" [value]="myForm.get('organizationControl')?.value">
+      @if (myForm.controls['organizationControl'].hasError('required')) {
+        <mat-error>
+          Название организации <strong>обязательно</strong>
         </mat-error>
-        <mat-error *ngIf="myForm.controls['emailControl'].hasError('required')">
-            Email <strong>обязателен</strong>
+      }
+    </mat-form-field>
+    
+    <mat-form-field class="d-block">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="emailControl" placeholder="email@example.com">
+      @if (myForm.controls['emailControl'].hasError('email') && !myForm.controls['emailControl'].hasError('required')) {
+        <mat-error>
+          Пожалуйста, введите корректный адрес
         </mat-error>
+      }
+      @if (myForm.controls['emailControl'].hasError('required')) {
+        <mat-error>
+          Email <strong>обязателен</strong>
+        </mat-error>
+      }
     </mat-form-field>
 
     <button mat-raised-button color="primary" class="d-block w-100 mt-3" [disabled]="myForm.status !== 'VALID'">Сохранить</button>

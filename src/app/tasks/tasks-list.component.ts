@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { Task, TaskStatus } from './task.model';
 import { ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,90 +13,88 @@ import { AppMaterialModule } from '../shared/modules/app.material.module';
 import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'app-tasks-list',
-    templateUrl: './tasks-list.component.html',
-    imports: [AppMaterialModule, RouterModule]
+  selector: 'app-tasks-list',
+  templateUrl: './tasks-list.component.html',
+  imports: [AppMaterialModule, RouterModule]
 })
 export class TasksListComponent implements OnInit, AfterViewInit {
-    readonly displayedColumns: string[] = ['name', 'project', 'description', 'status', 'actions'];
-    readonly dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>();
-    projects!: Project[];
+  private taskService = inject(TaskService);
+  private projectService = inject(ProjectService);
+  private dialogService = inject(ConfirmDialogService);
+  private errorDialogService = inject(ErrorDialogService);
 
-    @ViewChild(MatSort) sort!: MatSort;
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
+  readonly displayedColumns: string[] = ['name', 'project', 'description', 'status', 'actions'];
+  readonly dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>();
+  projects!: Project[];
 
-    constructor(
-        private taskService: TaskService,
-        private projectService: ProjectService,
-        private dialogService: ConfirmDialogService,
-        private errorDialogService: ErrorDialogService
-    ) { }
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-    ngOnInit(): void {
-        this.getTasks();
-        this.getProjects();
+  ngOnInit(): void {
+    this.getTasks();
+    this.getProjects();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
+  }
 
-    ngAfterViewInit() {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-    }
+  openDialog(taskId: string) {
+    const options = {
+      title: 'Удалить заказчика',
+      message: 'Вы уверены?',
+      cancelText: 'Нет',
+      confirmText: 'Да'
+    };
 
-    applyFilter(event: Event) {
-        const filterValue = (event.target as HTMLInputElement).value;
-        this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dialogService.open(options);
 
-        if (this.dataSource.paginator) {
-            this.dataSource.paginator.firstPage();
-        }
-    }
+    this.dialogService.confirmed().subscribe(confirmed => {
+      if (confirmed) {
+        this.deleteTask(taskId);
+      }
+    });
+  }
 
-    openDialog(taskId: string) {
-        const options = {
-            title: 'Удалить заказчика',
-            message: 'Вы уверены?',
-            cancelText: 'Нет',
-            confirmText: 'Да'
-        };
+  getTasks(): void {
+    this.taskService.getTasks()
+      .subscribe({
+        next: tasks => this.dataSource.data = tasks,
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-        this.dialogService.open(options);
+  getProjects(): void {
+    this.projectService.getProjects()
+      .subscribe({
+        next: projects => this.projects = projects,
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-        this.dialogService.confirmed().subscribe(confirmed => {
-            if (confirmed) {
-                this.deleteTask(taskId);
-            }
-        });
-    }
+  deleteTask(taskId: string) {
+    this.taskService.deleteTask(taskId)
+      .subscribe({
+        next: () => this.dataSource.data = this.dataSource.data.filter(task => task.id !== taskId),
+        error: error => this.errorDialogService.open(error.message)
+      });
+  }
 
-    getTasks(): void {
-        this.taskService.getTasks()
-            .subscribe({
-                next: tasks => this.dataSource.data = tasks,
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
+  getTaskStatusName(status: number): string {
+    return TaskStatus[status];
+  }
 
-    getProjects(): void {
-        this.projectService.getProjects()
-            .subscribe({
-                next: projects => this.projects = projects,
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
-
-    deleteTask(taskId: string) {
-        this.taskService.deleteTask(taskId)
-            .subscribe({
-                next: () => this.dataSource.data = this.dataSource.data.filter(task => task.id !== taskId),
-                error: error => this.errorDialogService.openDialog(error.message)
-            });
-    }
-
-    getTaskStatusName(status: number): string {
-        return TaskStatus[status];
-    }
-
-    getProjectName(projectId: string): string | undefined {
-        return this.projects?.find(project => project.id === projectId)?.name;
-    }
+  getProjectName(projectId: string): string | undefined {
+    return this.projects?.find(project => project.id === projectId)?.name;
+  }
 }
