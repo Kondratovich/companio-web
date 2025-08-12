@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
-    selector: 'app-not-found',
-    templateUrl: './not-found.component.html'
+  selector: 'app-not-found',
+  templateUrl: './not-found.component.html'
 })
 export class NotFoundComponent {
-    constructor(private _location: Location) { }
+  private location = inject(Location);
 
-    backClicked() {
-        this._location.back();
-    }
+  backClicked() {
+    this.location.back();
+  }
 }

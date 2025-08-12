@@ -1,10 +1,10 @@
 <div class="header">
-    <h1 mat-dialog-title>{{ data.title }}</h1>
+  <h1 mat-dialog-title>{{ data.title }}</h1>
 </div>
 <div mat-dialog-content>
-    {{ data.message }}
+  {{ data.message }}
 </div>
 <div mat-dialog-actions>
-    <button mat-stroked-button mat-dialog-close (click)="cancel()" cdkFocusInitial>{{ data.cancelText }}</button>
-    <button mat-stroked-button color="warn" mat-dialog-close (click)="confirm()">{{ data.confirmText }}</button>
+  <button mat-stroked-button mat-dialog-close (click)="cancel()" cdkFocusInitial>{{ data.cancelText }}</button>
+  <button mat-stroked-button color="warn" mat-dialog-close (click)="confirm()">{{ data.confirmText }}</button>
 </div>

@@ -3,15 +3,15 @@ import {
   ChangeDetectionStrategy,
   OnInit,
   ChangeDetectorRef,
+  inject,
 } from '@angular/core';
 import { CalendarEvent, CalendarModule, CalendarView } from 'angular-calendar';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import localeRu from '@angular/common/locales/ru'; // to register french
 import { CommonModule, registerLocaleData } from '@angular/common';
-import { startOfDay, endOfDay, isSameMonth, isSameDay } from 'date-fns';
+import { startOfDay, endOfDay } from 'date-fns';
 import { Subject } from 'rxjs';
 import { AbsenceTimelineService } from './absenceTimeline.service';
-import { AuthService } from '../auth/auth.service';
 import { ErrorDialogService } from '../shared/components/error-dialog/error-dialog.service';
 import { Absence, AbsenceTimeline } from './absenceTimeline.model';
 import { ConfirmDialogService } from '../shared/components/confirm-dialog/confirm-dialog.service';
@@ -28,7 +28,7 @@ type CalendarEventWithMeta = CalendarEvent<
 >;
 
 @Component({
-  selector: 'mwl-demo-component',
+  selector: 'app-absence-calendar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './absence-calendar.component.html',
   imports: [AppMaterialModule, CalendarModule, CommonModule, FormsModule],
@@ -36,22 +36,20 @@ type CalendarEventWithMeta = CalendarEvent<
 export class DemoComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen = true;
   viewDate: Date = new Date();
   events: CalendarEventWithMeta[] = [];
   absenceTimeline!: AbsenceTimeline;
   refresh = new Subject<void>();
-  displaySaveButton: boolean = false;
+  displaySaveButton = false;
   minDate: Date = new Date();
   maxDate: Date = new Date(this.minDate.getFullYear() + 1, 0, 0);
 
-  constructor(
-    private http: HttpClient,
-    private cdr: ChangeDetectorRef,
-    private auhtService: AuthService,
-    private errorDialogService: ErrorDialogService,
-    private dialogService: ConfirmDialogService,
-    private absenceTimelineService: AbsenceTimelineService) { }
+  private http = inject(HttpClient);
+  private cdr = inject(ChangeDetectorRef);
+  private errorDialogService = inject(ErrorDialogService);
+  private dialogService = inject(ConfirmDialogService);
+  private absenceTimelineService = inject(AbsenceTimelineService);
 
   ngOnInit(): void {
     registerLocaleData(localeRu);

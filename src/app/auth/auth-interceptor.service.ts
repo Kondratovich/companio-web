@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { catchError, throwError } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
+  private authService = inject(AuthService);
 
-  constructor(private authService: AuthService) { }
-
-  intercept(request: HttpRequest<any>, next: HttpHandler) {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler) {
 
     const authToken = this.authService.getAuthToken();
 

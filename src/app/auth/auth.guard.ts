@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Role } from '../employees/employee.model';
 import { AuthService } from './auth.service';
@@ -8,12 +8,10 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canActivateChild(route: ActivatedRouteSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     const allowedRoles = route.data['allowedRoles'];
     const mapped = allowedRoles.map((r: number) => Role[r]);
 
@@ -25,7 +23,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canActivate(route: ActivatedRouteSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     const allowedRoles = route.data['allowedRoles'];
     const mapped = allowedRoles.map((r: number) => Role[r]);
 

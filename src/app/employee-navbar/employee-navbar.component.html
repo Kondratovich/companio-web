@@ -1,43 +1,43 @@
 <app-header></app-header>
 
 <div class="container-fluid">
-    <div class="row">
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse min-vh-100">
-            <div class="position-sticky pt-3">
-                <h3 class="text-muted mt-2 mb-1">
-                    <span><b>Сотрудник</b></span>
-                </h3>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a routerLink="projects-info" routerLinkActive="text-dark" class="nav-link">
-                            <mat-icon style="vertical-align: bottom;">folder_open</mat-icon>
-                            Информация о проектах
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a routerLink="teams-info" routerLinkActive="text-dark" class="nav-link">
-                            <mat-icon style="vertical-align: bottom;">view_list</mat-icon>
-                            Информация о командах
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a routerLink="tasks-management" routerLinkActive="text-dark" class="nav-link">
-                            <mat-icon style="vertical-align: bottom;">done_all</mat-icon>
-                            Упавление задачами
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a routerLink="absence-management" routerLinkActive="text-dark" class="nav-link">
-                            <mat-icon style="vertical-align: bottom;">calendar_today</mat-icon>
-                            Календарь отпусков
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse min-vh-100">
+      <div class="position-sticky pt-3">
+        <h3 class="text-muted mt-2 mb-1">
+          <span><b>Сотрудник</b></span>
+        </h3>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a routerLink="projects-info" routerLinkActive="text-dark" class="nav-link">
+              <mat-icon style="vertical-align: bottom;">folder_open</mat-icon>
+              Информация о проектах
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="teams-info" routerLinkActive="text-dark" class="nav-link">
+              <mat-icon style="vertical-align: bottom;">view_list</mat-icon>
+              Информация о командах
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="tasks-management" routerLinkActive="text-dark" class="nav-link">
+              <mat-icon style="vertical-align: bottom;">done_all</mat-icon>
+              Упавление задачами
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="absence-management" routerLinkActive="text-dark" class="nav-link">
+              <mat-icon style="vertical-align: bottom;">calendar_today</mat-icon>
+              Календарь отпусков
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <router-outlet></router-outlet>
-        </main>
-    </div>
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>

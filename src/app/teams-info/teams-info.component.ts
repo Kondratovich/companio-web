@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewChildren, QueryList, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
@@ -26,6 +26,12 @@ import { CommonModule, DatePipe } from '@angular/common';
   imports: [AppMaterialModule, CommonModule, DatePipe]
 })
 export class TeamsInfoComponent implements OnInit {
+  private cd = inject(ChangeDetectorRef);
+  private teamService = inject(TeamService);
+  private employeeService = inject(EmployeeService);
+  private projectService = inject(ProjectService);
+  private errorDialogService = inject(ErrorDialogService);
+
   readonly columnsToDisplay: string[] = ['name', 'description'];
   readonly innerDisplayedColumns1: string[] = ['email', 'firstName', 'lastName', 'role'];
   readonly innerDisplayedColumns2: string[] = ['name', 'dateAdded', 'deadline', 'price'];;
@@ -40,20 +46,11 @@ export class TeamsInfoComponent implements OnInit {
   dataSource: MatTableDataSource<Team> = new MatTableDataSource<Team>();
   expandedElement!: Team | null;
 
-  constructor(
-    private cd: ChangeDetectorRef,
-    private teamService: TeamService,
-    private employeeService: EmployeeService,
-    private projectService: ProjectService,
-    private errorDialogService: ErrorDialogService
-  ) { }
-
   ngOnInit() {
     this.getTeams();
   }
 
-  toggleRow(element: Team) {
-    element.employees && (element.employees as MatTableDataSource<Employee>).data.length || element.projects && (element.projects as MatTableDataSource<Project>).data.length ? (this.expandedElement = this.expandedElement === element ? null : element) : null;
+  toggleRow() {
     this.cd.detectChanges();
     this.innerTablesEmpl.forEach((table, index) => (table.dataSource as MatTableDataSource<Employee>).sort = this.innerSortEmpl.toArray()[index]);
     this.innerTablesProj.forEach((table, index) => (table.dataSource as MatTableDataSource<Project>).sort = this.innerSortProj.toArray()[index]);
@@ -111,7 +108,7 @@ export class TeamsInfoComponent implements OnInit {
   setEmployeesForTeams(employees: Employee[]) {
     this.dataSource.data.forEach(team => {
       team.employees = [];
-      var teamEmployees = employees.filter(employee => employee.teamId === team.id);
+      const teamEmployees = employees.filter(employee => employee.teamId === team.id);
       team.employees = new MatTableDataSource(teamEmployees);
     });
   }
@@ -119,7 +116,7 @@ export class TeamsInfoComponent implements OnInit {
   setProjectsForTeams(projects: Project[]) {
     this.dataSource.data.forEach(team => {
       team.projects = [];
-      var teamProjects = projects.filter(project => project.teamId === team.id);
+      const teamProjects = projects.filter(project => project.teamId === team.id);
       team.projects = new MatTableDataSource(teamProjects);
     });
   }

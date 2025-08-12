@@ -1,7 +1,7 @@
 export class Customer {
-    id?: string;
-    email!: string;
-    firstName!: string;
-    lastName!: string;
-    organization!: string;
+  id?: string;
+  email!: string;
+  firstName!: string;
+  lastName!: string;
+  organization!: string;
 }
